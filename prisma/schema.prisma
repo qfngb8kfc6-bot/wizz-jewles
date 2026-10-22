@@ -1,0 +1,110 @@
+// Wizz Jewels — data model.
+// PostgreSQL in every environment (local via docker-compose, Neon/Supabase in production).
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../lib/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum MeetingFormat {
+  IN_STUDIO
+  VIDEO
+}
+
+enum ContactMethod {
+  EMAIL
+  PHONE
+  WHATSAPP
+}
+
+model Booking {
+  id               String        @id @default(cuid())
+  reference        String        @unique // human-friendly, e.g. WJ-7K2M9Q
+  status           BookingStatus @default(CONFIRMED)
+  consultationType String
+  format           MeetingFormat
+  startsAt         DateTime // UTC instant
+  endsAt           DateTime // UTC instant (excludes buffer)
+  durationMinutes  Int
+  timeZone         String        @default("Europe/London")
+  visitorTimeZone  String?
+
+  name               String
+  email              String
+  phone              String
+  contactMethod      ContactMethod @default(EMAIL)
+  budget             String?
+  message            String?
+  pieceSlug          String?
+  referenceImage     String? // storage key (private), never a public URL
+  referenceImageType String?
+
+  manageTokenHash String    @unique // sha256 of the token emailed to the customer
+  adminNotes      String?
+  cancelledAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  slots BookingSlot[]
+
+  @@index([startsAt])
+  @@index([status, startsAt])
+  @@index([email])
+}
+
+/// One row per 15-minute cell a booking occupies (duration + buffer).
+/// The unique constraint on `start` is what makes double booking impossible,
+/// including overlaps between consultations of different lengths.
+model BookingSlot {
+  id        String   @id @default(cuid())
+  start     DateTime @unique
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+}
+
+model BlockedDate {
+  id        String   @id @default(cuid())
+  date      String   @unique // YYYY-MM-DD in the studio's time zone
+  reason    String?
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String   @default("footer")
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+}
+
+/// Fixed-window rate limiting that works across serverless instances.
+model RateLimit {
+  key       String   @id // `${bucket}:${ip}:${windowStart}`
+  count     Int      @default(0)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}

@@ -1,0 +1,388 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Design tokens — Wizz Jewels
+   Ink / Ivory / Champagne gold / Warm stone. Gold is an accent only.
+   "-deep" variants exist for text on ivory (WCAG AA ≥ 4.5:1).
+------------------------------------------------------------------- */
+@theme {
+  --color-ink: #000000;
+  --color-ink-soft: #171718;
+  --color-ink-line: #2a2826;
+  --color-ivory: #f6f2ea;
+  --color-ivory-deep: #ece5d8;
+  --color-gold: #c9a96e;
+  --color-gold-light: #e6cf9f;
+  --color-gold-deep: #7a5f30;
+  --color-stone: #8c8279;
+  --color-stone-deep: #6b625a;
+  --color-error: #e08a7a;
+  --color-error-deep: #a3402f;
+
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-lux-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --tracking-label: 0.28em;
+  --tracking-wordmark: 0.42em;
+
+  --text-display-xl: clamp(3.1rem, 1.6rem + 6.4vw, 8.75rem);
+  --text-display-xl--line-height: 0.95;
+  --text-display-lg: clamp(2.5rem, 1.6rem + 3.8vw, 5.5rem);
+  --text-display-lg--line-height: 1;
+  --text-display-md: clamp(2rem, 1.5rem + 2.2vw, 3.75rem);
+  --text-display-md--line-height: 1.05;
+  --text-display-sm: clamp(1.6rem, 1.3rem + 1.2vw, 2.4rem);
+  --text-display-sm--line-height: 1.12;
+
+  --animate-shimmer: shimmer 2.8s var(--ease-lux) 0.4s 1 both;
+  --animate-marquee: marquee var(--marquee-duration, 48s) linear infinite;
+  --animate-scroll-cue: scroll-cue 2.4s var(--ease-lux-in-out) infinite;
+  --animate-shake: shake 0.42s var(--ease-lux) both;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 140% 0;
+  }
+  to {
+    background-position: -40% 0;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-ivory);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scrollbar-gutter: stable;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-ink);
+    color: var(--color-ivory);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-gold);
+    outline-offset: 4px;
+  }
+
+  [data-surface='light'] :focus-visible {
+    outline-color: var(--color-gold-deep);
+  }
+
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /* Small uppercase label with generous tracking. */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .container-lux {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 96rem;
+    padding-inline: clamp(1.25rem, 4vw, 4rem);
+  }
+
+  .hairline {
+    height: 1px;
+    background: color-mix(in oklab, var(--color-gold) 55%, transparent);
+  }
+
+  /* The one gradient: a gold sheen, used sparingly. */
+  .gold-sheen {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-gold) 0%,
+      var(--color-gold-light) 38%,
+      #fff4dc 50%,
+      var(--color-gold-light) 62%,
+      var(--color-gold) 100%
+    );
+    background-size: 250% 100%;
+  }
+
+  .text-sheen {
+    color: var(--color-gold);
+    background-image: linear-gradient(
+      100deg,
+      var(--color-gold) 0%,
+      var(--color-gold) 40%,
+      #fff1d2 50%,
+      var(--color-gold) 60%,
+      var(--color-gold) 100%
+    );
+    background-size: 250% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Animated underline drawing from the left. */
+  .link-lux {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-lux);
+    padding-bottom: 2px;
+  }
+  .link-lux:hover,
+  .link-lux:focus-visible,
+  .link-lux[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+
+  .prose-lux {
+    color: color-mix(in oklab, var(--color-ivory) 82%, transparent);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .prose-lux h2 {
+    font-size: var(--text-display-sm);
+    line-height: 1.15;
+    color: var(--color-ivory);
+    margin: 3rem 0 1rem;
+  }
+  .prose-lux h3 {
+    font-size: 1.5rem;
+    color: var(--color-ivory);
+    margin: 2rem 0 0.75rem;
+  }
+  .prose-lux p,
+  .prose-lux ul {
+    margin: 0 0 1.25rem;
+  }
+  .prose-lux ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-lux li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-lux li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.85em;
+    width: 0.75rem;
+    height: 1px;
+    background: var(--color-gold);
+  }
+  .prose-lux a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Route transitions (React <ViewTransition>, native View Transitions API)
+------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(.page) {
+  animation: 260ms var(--ease-lux) both vt-fade-out;
+}
+::view-transition-new(.page) {
+  animation:
+    520ms var(--ease-lux) 120ms both vt-fade-in,
+    720ms var(--ease-lux) 120ms both vt-rise;
+}
+
+/* A thin gold line wipes across the top of the screen between pages.
+   The element itself is transparent; only its transition group is painted. */
+::view-transition-group(page-wipe) {
+  background: var(--color-gold);
+  animation: 820ms var(--ease-lux-in-out) both vt-wipe;
+}
+::view-transition-old(page-wipe),
+::view-transition-new(page-wipe) {
+  display: none;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 640ms;
+  animation-timing-function: var(--ease-lux);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-soft-blur;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-rise {
+  from {
+    transform: translateY(18px);
+  }
+}
+@keyframes vt-wipe {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  51% {
+    transform-origin: right;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+@keyframes vt-soft-blur {
+  40% {
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 1ms !important;
+  }
+  ::view-transition-new(.page) {
+    animation: 200ms linear both vt-fade-in;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee {
+    animation: none !important;
+  }
+}
+
+@keyframes wordmark-sheen {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(480px);
+  }
+}
