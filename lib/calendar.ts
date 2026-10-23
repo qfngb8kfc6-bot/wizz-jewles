@@ -1,5 +1,5 @@
 import { siteUrl } from '@/lib/site-url';
-import { site } from '@/content/site';
+import { contact, site, studioLocation } from '@/content/site';
 
 export interface CalendarEvent {
   uid: string;
@@ -54,7 +54,7 @@ export function buildIcs(event: CalendarEvent): string {
     `DESCRIPTION:${esc(event.description)}`,
     `LOCATION:${esc(event.location)}`,
     ...(event.url ? [`URL:${event.url}`] : []),
-    `ORGANIZER;CN=${esc(site.name)}:mailto:${site.email}`,
+    ...(contact ? [`ORGANIZER;CN=${esc(site.name)}:mailto:${contact.email}`] : []),
     `SEQUENCE:${event.sequence ?? 0}`,
     `STATUS:${method === 'CANCEL' ? 'CANCELLED' : 'CONFIRMED'}`,
     'BEGIN:VALARM',
@@ -93,13 +93,13 @@ export function bookingCalendarEvent(b: {
     title: `${b.consultationName} — ${site.name}`,
     description: [
       `Your ${b.consultationName.toLowerCase()} consultation with ${site.name}.`,
-      inStudio ? `Studio: ${site.address.oneLine}` : 'Video call: we will email your private link the day before.',
+      inStudio ? `Studio: ${studioLocation}` : 'Video call: we will email your private link the day before.',
       `Reference: ${b.reference}`,
       b.manageUrl ? `Reschedule or cancel: ${b.manageUrl}` : '',
     ]
       .filter(Boolean)
       .join('\n'),
-    location: inStudio ? site.address.oneLine : 'Video call',
+    location: inStudio ? studioLocation : 'Video call',
     start: b.startsAt,
     end: b.endsAt,
     url: b.manageUrl ?? siteUrl('/book'),

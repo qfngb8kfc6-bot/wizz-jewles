@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { site } from '@/content/site';
+import type { ContactDetails } from '@/content/site';
 
 /** OpenStreetMap embed, only requested when the map scrolls near the viewport. */
-export function LazyMap() {
+export function LazyMap({ name, address }: { name: string; address: ContactDetails['address'] }) {
   const ref = useRef<HTMLDivElement>(null);
   const [load, setLoad] = useState(false);
   useEffect(() => {
@@ -22,14 +22,14 @@ export function LazyMap() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
-  const { lat, lng } = site.address.geo;
+  const { lat, lng } = address.geo;
   const d = 0.006;
   const src = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - d}%2C${lat - d / 2}%2C${lng + d}%2C${lat + d / 2}&layer=mapnik&marker=${lat}%2C${lng}`;
   return (
     <div ref={ref} className="relative aspect-[4/3] overflow-hidden border border-gold/20 bg-night sm:aspect-[16/9]">
       {load ? (
         <iframe
-          title={`Map showing ${site.name}, ${site.address.oneLine}`}
+          title={`Map showing ${name}, ${address.oneLine}`}
           src={src}
           loading="lazy"
           className="absolute inset-0 h-full w-full [filter:invert(0.92)_hue-rotate(180deg)_saturate(0.4)_brightness(0.9)]"

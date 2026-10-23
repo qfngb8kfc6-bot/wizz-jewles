@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { render } from '@react-email/render';
 import type { ReactElement } from 'react';
-import { site } from '@/content/site';
+import { contact, site } from '@/content/site';
 
 export interface EmailAttachment {
   filename: string;
@@ -27,6 +27,10 @@ const from = () => process.env.EMAIL_FROM ?? `${site.name} <onboarding@resend.de
  * rendered email is written to ./.outbox so it can be opened in a browser.
  */
 export async function sendEmail(message: EmailMessage): Promise<void> {
+  if (!message.to) {
+    console.warn(`[email] skipped "${message.subject}": no recipient (set STUDIO_NOTIFICATION_EMAIL)`);
+    return;
+  }
   const html = await render(message.react);
   const text = await render(message.react, { plainText: true });
 
@@ -85,4 +89,7 @@ export async function sendEmail(message: EmailMessage): Promise<void> {
 }
 
 /** Address that receives studio notifications. */
-export const studioInbox = () => process.env.STUDIO_NOTIFICATION_EMAIL ?? site.email;
+export const studioInbox = () => process.env.STUDIO_NOTIFICATION_EMAIL || contact?.email || '';
+
+/** Reply-To for customer emails: the studio inbox when known, otherwise unset. */
+export const replyToStudio = () => studioInbox() || undefined;

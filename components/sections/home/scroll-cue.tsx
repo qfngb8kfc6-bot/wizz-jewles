@@ -11,7 +11,7 @@ export function ScrollCue() {
     <motion.div
       aria-hidden="true"
       style={{ opacity, y }}
-      className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
+      className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 sm:flex"
     >
       <span className="label text-[10px] text-smoke">Scroll</span>
       <span className="relative block h-12 w-px overflow-hidden bg-ice/10">

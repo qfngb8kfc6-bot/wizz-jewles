@@ -1,4 +1,9 @@
-import { site } from './site';
+import { contact, site } from './site';
+
+/** How to reach us: real details once published, otherwise the contact form. */
+const reachUs = contact
+  ? `at ${contact.email} or by post at ${contact.address.oneLine}`
+  : 'through the contact form on this website';
 
 export interface LegalSection {
   heading: string;
@@ -25,7 +30,7 @@ export const privacy: LegalDoc = {
     {
       heading: 'Who we are',
       paragraphs: [
-        `${site.legalName} ("we", "us") is the controller of the personal data described in this policy. You can reach us at ${site.email} or by post at ${site.address.oneLine}.`,
+        `${site.legalName} ("we", "us") is the controller of the personal data described in this policy. You can reach us ${reachUs}.`,
       ],
     },
     {
@@ -64,7 +69,7 @@ export const privacy: LegalDoc = {
     {
       heading: 'Your rights',
       paragraphs: [
-        `You may ask to access, correct, delete or export your data, or object to how we use it, by emailing ${site.email}. You also have the right to complain to the Information Commissioner’s Office (ico.org.uk).`,
+        `You may ask to access, correct, delete or export your data, or object to how we use it, by contacting us ${contact ? `at ${contact.email}` : 'through the contact form on this website'}. You also have the right to complain to the Information Commissioner’s Office (ico.org.uk).`,
       ],
     },
   ],

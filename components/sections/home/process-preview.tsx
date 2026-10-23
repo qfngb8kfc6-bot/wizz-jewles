@@ -25,7 +25,7 @@ export function ProcessTimeline({ eyebrow, title, cta, detailed = false }: Proce
   const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 24 });
 
   return (
-    <section aria-labelledby="process-title" className="relative bg-void py-28 sm:py-36">
+    <section aria-labelledby="process-title" className="relative bg-void py-20 sm:py-36">
       <div className="container-lux">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>

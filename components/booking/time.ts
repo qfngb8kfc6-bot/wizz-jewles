@@ -13,10 +13,21 @@ export function fmtTime(iso: string, timeZone = STUDIO_TZ) {
   return new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone }).format(new Date(iso));
 }
 
+/**
+ * "Thursday 5 November 2026". Assembled from parts rather than Intl's own
+ * pattern, which differs between ICU versions (Node adds a comma, Chromium
+ * does not) and would cause hydration mismatches on server-rendered pages.
+ */
 export function fmtDateLong(iso: string, timeZone = STUDIO_TZ) {
-  return new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone }).format(
-    new Date(iso),
-  );
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone,
+  }).formatToParts(new Date(iso));
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? '';
+  return `${get('weekday')} ${get('day')} ${get('month')} ${get('year')}`;
 }
 
 export function fmtTzName(iso: string, timeZone: string) {
@@ -57,9 +68,14 @@ export function monthLabel(month: string) {
 }
 
 export function dayLabel(key: string) {
-  return new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(
-    keyToDate(key),
-  );
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    timeZone: 'UTC',
+  }).formatToParts(keyToDate(key));
+  const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? '';
+  return `${get('weekday')} ${get('day')} ${get('month')}`;
 }
 
 /** Today's date in the studio's time zone. */

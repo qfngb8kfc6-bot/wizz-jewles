@@ -17,10 +17,10 @@ export const metadata = pageMetadata({
   path: '/bespoke',
 });
 
-/** Focal points for the tight close-up crops (grillz teeth, chain links, ring dome). */
+/** Focal points for the 4:3 crops of each hero shot (well within native resolution). */
 const closeUpFocus = [
-  { x: 48, y: 58 },
-  { x: 58, y: 80 },
+  { x: 50, y: 45 },
+  { x: 55, y: 50 },
   { x: 44, y: 46 },
 ];
 
@@ -37,10 +37,10 @@ export default function BespokePage() {
 
       {/* Three close-up crops of the real work, side by side. */}
       <section aria-label="Close-ups" className="bg-void pb-8">
-        <div className="container-lux grid grid-cols-3 gap-3 sm:gap-6">
+        <div className="container-lux grid grid-cols-3 items-start gap-3 sm:gap-6">
           {pieces.map((p, i) => (
             <div key={p.slug} className="bg-night p-1.5 sm:p-3" style={{ marginTop: i === 1 ? '3rem' : 0 }}>
-              <Photo image={p.images[0]} ratio="3 / 4" zoom={1.6} focus={closeUpFocus[i]} sizes="(min-width: 640px) 30vw, 32vw" />
+              <Photo image={p.images[0]} ratio="4 / 3" focus={closeUpFocus[i]} sizes="(min-width: 640px) 30vw, 32vw" />
             </div>
           ))}
         </div>

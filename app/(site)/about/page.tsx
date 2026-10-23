@@ -63,23 +63,26 @@ export default function AboutPage() {
       </section>
 
       <section aria-label="The work" className="overflow-hidden bg-void py-24 sm:py-32">
-        <div className="container-lux">
-          <Parallax offset={70} zoom={0.05}>
+        {/* Capped at 72rem so the 2:1 crop of the 2400px chain shot stays sharp even at 2x. */}
+        <div className="container-lux max-w-6xl">
+          <Parallax offset={70}>
             <div className="bg-night p-3">
-              <Photo image={about.workshop} ratio="21 / 9" focus={{ x: 58, y: 76 }} sizes="94vw" />
+              <Photo image={about.workshop} ratio="2 / 1" focus={{ x: 50, y: 30 }} sizes="(min-width: 1200px) 1152px, 94vw" />
             </div>
           </Parallax>
         </div>
       </section>
 
-      <section aria-labelledby="timeline-title" className="bg-void py-24 sm:py-32">
-        <div className="container-lux max-w-5xl">
-          <SplitText id="timeline-title" text="The story so far" className="text-center font-display text-display-md" />
-          <div className="mt-20">
-            <Timeline items={about.timeline} />
+      {about.timeline.published ? (
+        <section aria-labelledby="timeline-title" className="bg-void py-24 sm:py-32">
+          <div className="container-lux max-w-5xl">
+            <SplitText id="timeline-title" text="The story so far" className="text-center font-display text-display-md" />
+            <div className="mt-20">
+              <Timeline items={about.timeline.items} />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <CtaBand {...home.finalCta} />
     </>

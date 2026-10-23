@@ -15,7 +15,7 @@ export const metadata = pageMetadata({
 
 export default function BookPage({ searchParams }: PageProps<'/book'>) {
   return (
-    <section className="relative isolate overflow-hidden bg-void pt-36 pb-28 sm:pt-44">
+    <section className="relative isolate overflow-hidden bg-void pt-32 pb-20 sm:pt-44 sm:pb-28">
       <Starfield density={0.6} className="[mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
       <OrbitRing className="pointer-events-none absolute top-24 -right-40 hidden w-[44rem] opacity-50 lg:block" />
       <div className="container-lux relative">
