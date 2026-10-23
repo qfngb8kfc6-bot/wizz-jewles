@@ -4,55 +4,58 @@
  */
 export const consultationTypes = [
   {
-    id: 'engagement',
-    name: 'Engagement & Bridal',
+    id: 'grillz',
+    name: 'Custom Grillz',
     duration: 60,
-    summary: 'Explore diamonds, settings and bands with time to compare by eye and by hand.',
+    summary: 'Design, stones and metal, plus the mould and fitting so they sit right.',
   },
   {
-    id: 'bespoke',
-    name: 'Bespoke Commission',
-    duration: 90,
-    summary: 'Bring an idea, a sketch or an heirloom. We will shape it into a design together.',
+    id: 'chains',
+    name: 'Custom Chains & Pendants',
+    duration: 45,
+    summary: 'Tennis chains, links and one-off pendants, built around your idea.',
   },
   {
-    id: 'restoration',
-    name: 'Repairs & Restoration',
+    id: 'rings',
+    name: 'Rings & Engagement',
+    duration: 60,
+    summary: 'Statement rings and engagement pieces. Compare stones and settings up close.',
+  },
+  {
+    id: 'repairs',
+    name: 'Repairs, Resizing & Re-plating',
     duration: 30,
-    summary: 'An assessment of a treasured piece, with honest advice on what it needs.',
+    summary: 'Bring it in. We will tell you straight what it needs and what it costs.',
   },
   {
     id: 'general',
-    name: 'General Consultation',
-    duration: 45,
-    summary: 'Gifts, valuations, resizing or simply a conversation about what is possible.',
+    name: 'General Enquiry',
+    duration: 30,
+    summary: 'Anything else: gifts, questions, or just talking through an idea.',
   },
 ] as const;
 
 export type ConsultationTypeId = (typeof consultationTypes)[number]['id'];
 
-export const consultationTypeIds = consultationTypes.map((t) => t.id) as [
-  ConsultationTypeId,
-  ...ConsultationTypeId[],
-];
+export const consultationTypeIds = consultationTypes.map((t) => t.id) as [ConsultationTypeId, ...ConsultationTypeId[]];
 
 export function getConsultationType(id: string) {
   return consultationTypes.find((t) => t.id === id);
 }
 
 export const meetingFormats = [
-  { id: 'IN_STUDIO', name: 'In the studio', summary: 'Visit us in Hatton Garden. Tea, good light and the loupe.' },
+  { id: 'IN_STUDIO', name: 'In the studio', summary: 'Come to the studio and see the pieces in person.' },
   { id: 'VIDEO', name: 'Video call', summary: 'A private video consultation. We will email a secure link.' },
 ] as const;
 
 export type MeetingFormatId = (typeof meetingFormats)[number]['id'];
 
 export const budgetRanges = [
-  'Under £2,000',
+  'Under £1,000',
+  '£1,000 – £2,000',
   '£2,000 – £5,000',
   '£5,000 – £10,000',
-  '£10,000 – £25,000',
-  '£25,000+',
+  '£10,000+',
   'Not sure yet',
 ] as const;
 

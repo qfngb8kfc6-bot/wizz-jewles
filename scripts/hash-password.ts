@@ -8,4 +8,4 @@ if (!password || password.length < 10) {
 }
 const salt = randomBytes(16);
 const hash = scryptSync(password, salt, 32);
-console.log(`ADMIN_PASSWORD_HASH="scrypt:${salt.toString("hex")}:${hash.toString("hex")}"`);
+console.log(`ADMIN_PASSWORD_HASH="scrypt:${salt.toString('hex')}:${hash.toString('hex')}"`);

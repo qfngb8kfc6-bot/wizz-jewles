@@ -75,7 +75,10 @@ export async function sendEmail(message: EmailMessage): Promise<void> {
   }
   const dir = path.join(process.cwd(), '.outbox');
   await mkdir(dir, { recursive: true });
-  const base = `${Date.now()}-${message.subject.replace(/[^a-z0-9]+/gi, '-').toLowerCase().slice(0, 60)}`;
+  const base = `${Date.now()}-${message.subject
+    .replace(/[^a-z0-9]+/gi, '-')
+    .toLowerCase()
+    .slice(0, 60)}`;
   await writeFile(path.join(dir, `${base}.html`), html);
   for (const a of message.attachments ?? []) await writeFile(path.join(dir, `${base}-${a.filename}`), a.content);
   console.info(`[email] to=${message.to} subject="${message.subject}" → .outbox/${base}.html`);

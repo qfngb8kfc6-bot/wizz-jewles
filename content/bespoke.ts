@@ -1,47 +1,43 @@
 export const bespoke = {
   hero: {
-    eyebrow: 'Bespoke',
-    title: 'Designed with you.\nMade for you alone.',
-    intro:
-      'From a sketch on a napkin to a ring that has been in your family for generations, we turn ideas into jewellery that could only ever be yours.',
+    eyebrow: 'Custom',
+    title: 'Your idea.\nOur bench.',
+    intro: 'Grillz, chains, pendants and rings made from scratch, around you. Bring a sketch, a screenshot or just a feeling.',
   },
   intro: {
     title: 'What we make',
     items: [
-      { title: 'Engagement rings', body: 'Solitaires, three-stones, halos and toi et moi, designed around a stone you have chosen together with us.' },
-      { title: 'Wedding bands', body: 'Matched or contrasting, shaped to sit perfectly beside an engagement ring.' },
-      { title: 'Redesign & heirlooms', body: 'We reimagine inherited jewellery, reusing your stones and, where possible, your gold.' },
-      { title: 'Signets & engraving', body: 'Crests, monograms and messages, engraved by hand.' },
+      { title: 'Custom grillz', body: 'Moulded to your teeth. Pavé, solid, fangs, cuts, open face. Single tooth to full set.' },
+      { title: 'Chains', body: 'Tennis chains and custom links in yellow, white or rose gold.' },
+      { title: 'Pendants', body: 'One-off pendants: names, logos, symbols, iced or solid.' },
+      { title: 'Rings', body: 'Statement rings, pavé domes and engagement pieces.' },
     ],
   },
+  // TODO: client — confirm timings, deposits and policies.
   faqs: [
     {
-      q: 'How long does a bespoke commission take?',
-      a: 'Most commissions take eight to ten weeks from first consultation to collection. If you have a date in mind, tell us at the start and we will plan backwards from it; shorter timescales are often possible.',
+      q: 'How do grillz moulds work?',
+      a: 'We take a mould of your teeth in the studio, or post you a kit with simple instructions. Your grillz are built to that mould, then fitted and adjusted so they sit comfortably.',
     },
     {
-      q: 'What does bespoke cost?',
-      a: 'Bespoke engagement rings typically begin from £3,500, with the stone usually the largest part of the budget. We will always show you options at, and below, the figure you give us, and never above it without asking.',
+      q: 'How long does a custom piece take?',
+      a: 'It depends on the piece and the stones. We give you a clear timeline at your consultation, and keep you updated while it is being made.',
     },
     {
-      q: 'Can you use stones or gold from an heirloom?',
-      a: 'Yes. We assess every stone before resetting it, and can often refine and reuse your gold. Where gold cannot be reused, we can credit its value against your commission.',
+      q: 'What does custom cost?',
+      a: 'Every piece is priced on its metal, stones and labour. Tell us your budget and we will show you what it gets you, honestly.',
     },
     {
-      q: 'Where do your diamonds and gemstones come from?',
-      a: 'We buy from a small group of dealers we have worked with for many years, with full provenance. Diamonds over 0.5ct come with GIA or IGI certification. Lab-grown diamonds are available on request.',
-    },
-    {
-      q: 'Do I need to know my ring size?',
-      a: 'No. We size you in the studio, or post a complimentary sizing kit before a video consultation. Every bespoke ring includes one free resize within the first year.',
-    },
-    {
-      q: 'How does payment work?',
-      a: 'A 50% deposit confirms your commission once the design is agreed; the balance is due on collection. We accept bank transfer and all major cards.',
+      q: 'Can you remake or upgrade something I already own?',
+      a: 'Yes. We can re-set stones, resize, re-plate and repair, or rework an old piece into something new.',
     },
     {
       q: 'Can I do everything remotely?',
-      a: 'Absolutely. Many clients work with us entirely by video, with wax models and stones posted securely for approval and the finished piece delivered by insured courier.',
+      a: 'Yes. Book a video consultation; we can post mould kits and send designs and progress photos, then deliver the finished piece by insured courier.',
+    },
+    {
+      q: 'How does payment work?',
+      a: 'A deposit confirms your piece once the design is agreed, with the balance due on collection. We will confirm the details in writing before anything starts.',
     },
   ],
 };

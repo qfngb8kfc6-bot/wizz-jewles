@@ -121,14 +121,13 @@ export const cookies: LegalDoc = {
   sections: [
     {
       heading: 'Our approach',
-      paragraphs: [
-        'We keep cookies to a minimum. This site does not use advertising or cross-site tracking cookies.',
-      ],
+      paragraphs: ['We keep cookies to a minimum. This site does not use advertising or cross-site tracking cookies.'],
     },
     {
       heading: 'Strictly necessary',
       list: [
         'wj_consent (local storage): remembers your choice on our cookie banner. 12 months.',
+        'wj_intro_seen (session storage): stops the opening logo animation replaying during your visit. Cleared when you close the tab.',
         'wj_admin: keeps studio staff signed in to the private dashboard. Only set for staff. 12 hours.',
       ],
     },

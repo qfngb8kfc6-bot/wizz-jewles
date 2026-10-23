@@ -18,10 +18,10 @@ export default function BookingConfirmationEmail(p: BookingEmailProps) {
   return (
     <EmailLayout preview={`Your consultation is confirmed — ${p.when}`}>
       <Text style={styles.label}>Consultation confirmed</Text>
-      <Text style={styles.h1}>Thank you, {first}. We look forward to meeting you.</Text>
+      <Text style={styles.h1}>You’re booked in, {first}.</Text>
       <Text style={styles.p}>
-        Your appointment is held exclusively for you. A calendar invitation is attached; if anything changes, you can
-        reschedule or cancel at any time using your private link below.
+        Your slot is locked in. A calendar invite is attached; if anything changes, you can reschedule or cancel at any time using
+        your private link below.
       </Text>
       <Hr style={{ borderColor: palette.gold, margin: '28px 0' }} />
       <Detail label="Consultation" value={p.consultationName} />
@@ -30,7 +30,7 @@ export default function BookingConfirmationEmail(p: BookingEmailProps) {
       {p.visitorWhen ? <Detail label="Your local time" value={p.visitorWhen} /> : null}
       <Detail label="Where" value={p.location} />
       <Detail label="Reference" value={p.reference} />
-      <Hr style={{ borderColor: '#E7DFD1', margin: '12px 0 28px' }} />
+      <Hr style={{ borderColor: palette.line, margin: '12px 0 28px' }} />
       <Button href={p.manageUrl} style={styles.button}>
         Manage your booking
       </Button>
@@ -40,8 +40,8 @@ export default function BookingConfirmationEmail(p: BookingEmailProps) {
         </Link>{' '}
         · Apple and Outlook: open the attached invitation.
       </Text>
-      <Text style={{ ...styles.p, fontSize: '13px', color: palette.stone }}>
-        If you have photographs of a piece or an idea you would like to discuss, simply reply to this email.
+      <Text style={{ ...styles.p, fontSize: '13px', color: palette.smoke }}>
+        Got photos, screenshots or sketches of your idea? Just reply to this email.
       </Text>
     </EmailLayout>
   );

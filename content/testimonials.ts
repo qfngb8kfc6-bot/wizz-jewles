@@ -1,25 +1,22 @@
+/**
+ * TODO: client — placeholder testimonials. Replace with real, attributable
+ * client words (with permission) before launch.
+ */
 export const testimonials = [
   {
     quote:
-      'We came in with a photograph of my grandmother’s ring and left, ten weeks later, with something that felt both completely new and completely hers.',
-    name: 'Amara & Theo',
-    detail: 'Bespoke engagement ring',
+      'Told Wizz what I wanted, he drew it on the spot. Two fittings later the grillz sat perfect. People stop me every week.',
+    name: 'Placeholder client',
+    detail: 'Custom grillz',
   },
   {
-    quote:
-      'No pressure, no sales patter, just genuine expertise. They showed us eleven sapphires and explained the difference in each one until we could see it for ourselves.',
-    name: 'Daniel R.',
-    detail: 'Bespoke commission',
+    quote: 'No hard sell. Showed me exactly where my money was going, stone by stone. The chain is unreal in daylight.',
+    name: 'Placeholder client',
+    detail: 'Tennis chain',
   },
   {
-    quote:
-      'The video consultation was as personal as being there. The finished bands arrived beautifully packaged and fit perfectly first time.',
-    name: 'Priya & Sam',
+    quote: 'Did the whole thing over video. Clear updates, quick replies, and the ring fit first time.',
+    name: 'Placeholder client',
     detail: 'Video consultation',
-  },
-  {
-    quote: 'They restored my mother’s pearls and re-tipped her engagement ring. It is the most meaningful thing I own, and it looks as it did in 1978.',
-    name: 'Helen M.',
-    detail: 'Restoration',
   },
 ] as const;

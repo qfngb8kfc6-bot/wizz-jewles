@@ -15,6 +15,7 @@ interface SplitTextProps {
   immediate?: boolean;
   /** Line breaks: use "\n" in `text`. */
   lineClassName?: string;
+  id?: string;
 }
 
 /**
@@ -29,6 +30,7 @@ export function SplitText({
   stagger = 0.06,
   immediate = false,
   lineClassName,
+  id,
 }: SplitTextProps) {
   const lines = text.split('\n');
   let index = 0;
@@ -38,7 +40,7 @@ export function SplitText({
 
   return createElement(
     as,
-    { className, 'aria-label': text.replace(/\n/g, ' ') },
+    { id, className, 'aria-label': text.replace(/\n/g, ' ') },
     <motion.span aria-hidden="true" className="block" {...trigger}>
       {lines.map((line, li) => (
         <span key={li} className={lineClassName ?? 'block'}>
@@ -46,7 +48,7 @@ export function SplitText({
             const i = index++;
             return (
               <Fragment key={wi}>
-                <span className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-bottom">
+                <span className="-mb-[0.12em] inline-block overflow-hidden pb-[0.12em] align-bottom">
                   <motion.span
                     data-reveal=""
                     className="inline-block will-change-transform"

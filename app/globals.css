@@ -1,23 +1,30 @@
 @import 'tailwindcss';
 
 /* ------------------------------------------------------------------
-   Design tokens — Wizz Jewels
-   Ink / Ivory / Champagne gold / Warm stone. Gold is an accent only.
-   "-deep" variants exist for text on ivory (WCAG AA ≥ 4.5:1).
+   Design tokens — Wizz Jewels (cosmic gold)
+   Sampled from the logo. The site is dark-first throughout; `void` must
+   stay exactly #000000 because every logo file sits on pure black.
+   Contrast on void: ice 18:1 · gold-bright 11.4:1 · gold 7.2:1 ·
+   smoke 6.1:1 · gold-deep 4.3:1 (large text / decoration only).
 ------------------------------------------------------------------- */
 @theme {
-  --color-ink: #000000;
-  --color-ink-soft: #171718;
-  --color-ink-line: #2a2826;
-  --color-ivory: #f6f2ea;
-  --color-ivory-deep: #ece5d8;
-  --color-gold: #c9a96e;
-  --color-gold-light: #e6cf9f;
-  --color-gold-deep: #7a5f30;
-  --color-stone: #8c8279;
-  --color-stone-deep: #6b625a;
-  --color-error: #e08a7a;
-  --color-error-deep: #a3402f;
+  --color-*: initial;
+  --color-void: #000000;
+  --color-night: #0a0a0c;
+  --color-night-2: #141418;
+  --color-line: #26262c;
+  --color-gold-bright: #e0b979;
+  --color-gold: #c98a3a;
+  --color-gold-deep: #a16320;
+  --color-ember: #5b300a;
+  --color-ice: #e9eef5;
+  --color-smoke: #8a8a93;
+  --color-error: #f0a08c;
+  --color-success: #9fd8b4;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-black: #000000;
+  --color-white: #ffffff;
 
   --font-display: var(--font-cormorant), 'Cormorant Garamond', 'Times New Roman', serif;
   --font-sans: var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif;
@@ -26,9 +33,8 @@
   --ease-lux-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
   --tracking-label: 0.28em;
-  --tracking-wordmark: 0.42em;
 
-  --text-display-xl: clamp(3.1rem, 1.6rem + 6.4vw, 8.75rem);
+  --text-display-xl: clamp(3rem, 1.4rem + 6.6vw, 8.5rem);
   --text-display-xl--line-height: 0.95;
   --text-display-lg: clamp(2.5rem, 1.6rem + 3.8vw, 5.5rem);
   --text-display-lg--line-height: 1;
@@ -37,19 +43,10 @@
   --text-display-sm: clamp(1.6rem, 1.3rem + 1.2vw, 2.4rem);
   --text-display-sm--line-height: 1.12;
 
-  --animate-shimmer: shimmer 2.8s var(--ease-lux) 0.4s 1 both;
   --animate-marquee: marquee var(--marquee-duration, 48s) linear infinite;
-  --animate-scroll-cue: scroll-cue 2.4s var(--ease-lux-in-out) infinite;
   --animate-shake: shake 0.42s var(--ease-lux) both;
-}
-
-@keyframes shimmer {
-  from {
-    background-position: 140% 0;
-  }
-  to {
-    background-position: -40% 0;
-  }
+  --animate-orbit: orbit 40s linear infinite;
+  --animate-breathe: breathe 7s ease-in-out infinite;
 }
 
 @keyframes marquee {
@@ -58,25 +55,6 @@
   }
   to {
     transform: translate3d(-50%, 0, 0);
-  }
-}
-
-@keyframes scroll-cue {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  45% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-  55% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
   }
 }
 
@@ -99,13 +77,56 @@
   }
 }
 
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* A light sweep crossing an element once (used on logo + buttons). */
+@keyframes sweep {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+/* Four-point sparkle glint: grows, rotates a touch, fades. */
+@keyframes glint {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(20deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) rotate(45deg);
+  }
+}
+
 @layer base {
   html {
-    background: var(--color-ink);
-    color: var(--color-ivory);
+    background: var(--color-void);
+    color: var(--color-ice);
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     scrollbar-gutter: stable;
+    color-scheme: dark;
   }
 
   html.lenis,
@@ -121,24 +142,20 @@
 
   body {
     font-family: var(--font-sans);
-    background: var(--color-ink);
-    color: var(--color-ivory);
+    background: var(--color-void);
+    color: var(--color-ice);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
     background: var(--color-gold);
-    color: var(--color-ink);
+    color: var(--color-void);
   }
 
   :focus-visible {
-    outline: 1px solid var(--color-gold);
+    outline: 1px solid var(--color-gold-bright);
     outline-offset: 4px;
-  }
-
-  [data-surface='light'] :focus-visible {
-    outline-color: var(--color-gold-deep);
   }
 
   button,
@@ -159,10 +176,15 @@
   p {
     text-wrap: pretty;
   }
+
+  /* If JS never runs, reveal-animated content must still be visible. */
+  html.no-js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @layer components {
-  /* Small uppercase label with generous tracking. */
   .label {
     font-family: var(--font-sans);
     font-size: 0.6875rem;
@@ -181,33 +203,37 @@
 
   .hairline {
     height: 1px;
-    background: color-mix(in oklab, var(--color-gold) 55%, transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-gold) 70%, transparent) 20%,
+      color-mix(in oklab, var(--color-gold) 70%, transparent) 80%,
+      transparent
+    );
   }
 
-  /* The one gradient: a gold sheen, used sparingly. */
-  .gold-sheen {
-    background-image: linear-gradient(
-      100deg,
-      var(--color-gold) 0%,
-      var(--color-gold-light) 38%,
-      #fff4dc 50%,
-      var(--color-gold-light) 62%,
-      var(--color-gold) 100%
-    );
-    background-size: 250% 100%;
+  /* Neon-gold glow echoing the logo. Use on key moments only. */
+  .glow-text {
+    color: var(--color-gold-bright);
+    text-shadow:
+      0 0 1px rgba(255, 226, 170, 0.6),
+      0 0 12px rgba(201, 138, 58, 0.55),
+      0 0 32px rgba(161, 99, 32, 0.45);
+  }
+  .glow-line {
+    filter: drop-shadow(0 0 3px rgba(201, 138, 58, 0.7)) drop-shadow(0 0 10px rgba(161, 99, 32, 0.45));
   }
 
-  .text-sheen {
-    color: var(--color-gold);
+  /* Gold gradient text, for small accents. */
+  .text-gold-gradient {
     background-image: linear-gradient(
       100deg,
-      var(--color-gold) 0%,
-      var(--color-gold) 40%,
-      #fff1d2 50%,
-      var(--color-gold) 60%,
-      var(--color-gold) 100%
+      var(--color-gold-deep),
+      var(--color-gold-bright) 45%,
+      #fff0cf 50%,
+      var(--color-gold-bright) 55%,
+      var(--color-gold)
     );
-    background-size: 250% 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -228,21 +254,42 @@
     background-size: 100% 1px;
   }
 
+  /*
+   * Photo grade for the client's phone photos: a very slight contrast lift
+   * and a vignette that melts into the black page. Never shifts hue.
+   */
+  .photo-grade {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--color-night);
+  }
+  .photo-grade img {
+    filter: contrast(1.06) saturate(1.02) brightness(0.97);
+  }
+  .photo-grade::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 85% 80% at var(--focus-x, 50%) var(--focus-y, 50%),
+      transparent 55%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+  }
+
   .prose-lux {
-    color: color-mix(in oklab, var(--color-ivory) 82%, transparent);
+    color: color-mix(in oklab, var(--color-ice) 80%, transparent);
     font-size: 1rem;
     line-height: 1.8;
   }
   .prose-lux h2 {
     font-size: var(--text-display-sm);
     line-height: 1.15;
-    color: var(--color-ivory);
+    color: var(--color-ice);
     margin: 3rem 0 1rem;
-  }
-  .prose-lux h3 {
-    font-size: 1.5rem;
-    color: var(--color-ivory);
-    margin: 2rem 0 0.75rem;
   }
   .prose-lux p,
   .prose-lux ul {
@@ -260,14 +307,15 @@
   .prose-lux li::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 0.85em;
-    width: 0.75rem;
-    height: 1px;
-    background: var(--color-gold);
+    left: 0.15rem;
+    top: 0.7em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border: 1px solid var(--color-gold);
+    transform: rotate(45deg);
   }
   .prose-lux a {
-    color: var(--color-gold);
+    color: var(--color-gold-bright);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -297,10 +345,11 @@
     720ms var(--ease-lux) 120ms both vt-rise;
 }
 
-/* A thin gold line wipes across the top of the screen between pages.
+/* A thin gold line sweeps across the top between pages.
    The element itself is transparent; only its transition group is painted. */
 ::view-transition-group(page-wipe) {
   background: var(--color-gold);
+  box-shadow: 0 0 12px var(--color-gold);
   animation: 820ms var(--ease-lux-in-out) both vt-wipe;
 }
 ::view-transition-old(page-wipe),
@@ -373,16 +422,128 @@
   *::after {
     scroll-behavior: auto !important;
   }
-  .animate-marquee {
+  .animate-marquee,
+  .animate-orbit,
+  .animate-breathe {
     animation: none !important;
   }
 }
 
-@keyframes wordmark-sheen {
+@keyframes orbit-dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* Sparkle glint: plays once each time a photo card is hovered. */
+.glint {
+  position: absolute;
+  z-index: 3;
+  width: 26px;
+  height: 26px;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(255, 240, 207, 0.9));
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .group:hover .glint {
+    animation: glint 0.9s var(--ease-lux) 0.15s 1 both;
+  }
+  .group:hover .glint + .glint {
+    animation-delay: 0.45s;
+  }
+}
+
+/* ---------- First-visit intro ---------- */
+html.intro .intro-overlay {
+  display: flex;
+}
+html.intro body {
+  overflow: hidden;
+}
+.intro-logo {
+  animation: intro-bloom 1.1s var(--ease-lux) both;
+}
+.intro-sweep {
+  transform: translateX(-120%) skewX(-18deg);
+  animation: sweep 0.9s var(--ease-lux) 0.55s 1 both;
+}
+@keyframes intro-bloom {
   from {
-    transform: translateX(0);
+    opacity: 0;
+    filter: brightness(0.3);
+    transform: scale(0.96);
+  }
+  60% {
+    filter: brightness(1.25);
   }
   to {
-    transform: translateX(480px);
+    opacity: 1;
+    filter: brightness(1);
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-logo,
+  .intro-sweep {
+    animation: none;
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ---------- Hero entrance (CSS-only, plays before hydration) ---------- */
+.ignite-line {
+  animation: rise-in 1.1s var(--ease-lux) both;
+}
+.ignite-glyph {
+  animation: ignite 0.8s var(--ease-lux) both;
+}
+.hero-fade {
+  animation: hero-fade 1.6s var(--ease-lux) 0.1s both;
+}
+@keyframes rise-in {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes ignite {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+html.intro .ignite-line,
+html.intro .ignite-glyph,
+html.intro .hero-fade {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ignite-line,
+  .ignite-glyph,
+  .hero-fade {
+    animation: none;
   }
 }

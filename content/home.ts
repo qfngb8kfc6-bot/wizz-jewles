@@ -2,45 +2,56 @@ import { work } from './images';
 
 export const home = {
   hero: {
-    eyebrow: 'Fine jewellery · Hatton Garden, London',
-    headline: 'Made by hand.\nMade to be kept.',
-    intro:
-      'Engagement rings, bespoke commissions and heirloom pieces, designed with you and crafted at our bench in the heart of London’s jewellery quarter.',
+    eyebrow: 'Custom jewellery · Handcrafted',
+    headline: 'Made to shine.\nMade for you.',
+    intro: 'Custom grillz, chains and fine jewellery, handcrafted by Wizz.',
     primaryCta: { label: 'Book a Consultation', href: '/book' },
     secondaryCta: { label: 'View the Collection', href: '/collection' },
+    /** The hero piece shown inside the orbit ring. */
+    image: work.grillzLandscape,
   },
   featured: {
-    eyebrow: 'Selected pieces',
-    title: 'From the bench',
-    intro: 'A few recent pieces, each one cast, set and finished by hand in our workshop.',
+    eyebrow: 'The work',
+    title: 'Straight from the bench',
+    intro: 'Real pieces, made for real clients. Every stone set by hand.',
   },
   craft: {
     eyebrow: 'The craft',
-    title: 'Every piece begins\nwith a conversation.',
+    title: 'Every stone.\nSet by hand.',
     paragraphs: [
-      'We are a small studio, by choice. It means the person you meet is the person who sketches your ring, selects your stone under the loupe and sets it at the bench.',
-      'We work only in recycled gold and platinum, and source diamonds and coloured gemstones from a handful of dealers we have known for years, so we can tell you exactly where your stone came from.',
+      'No middlemen, no catalogue. The person you talk to is the person who designs your piece and sets every stone in it.',
+      'Grillz are moulded to your teeth. Chains are built link by link. Rings are paved until the whole surface is light. If it is not right, it does not leave the bench.',
     ],
+    // TODO: client — confirm these numbers before launch.
     stats: [
-      { value: 15, suffix: '', label: 'Years at the bench' },
-      { value: 500, suffix: '+', label: 'Commissions completed' },
-      { value: 100, suffix: '%', label: 'Recycled gold & platinum' },
+      { value: 10, suffix: '+', label: 'Years at the bench' },
+      { value: 500, suffix: '+', label: 'Custom pieces made' },
+      { value: 100, suffix: '%', label: 'Made by hand' },
     ],
     images: { main: work.ringPortrait, accent: work.chainLandscape, detail: work.grillzPortrait },
   },
   process: {
-    eyebrow: 'Bespoke, step by step',
-    title: 'The making of something yours',
-    cta: { label: 'Explore bespoke', href: '/bespoke' },
+    eyebrow: 'How custom works',
+    title: 'From idea to ice',
+    cta: { label: 'More on custom', href: '/bespoke' },
   },
   testimonials: {
-    eyebrow: 'Kind words',
+    eyebrow: 'Word of mouth',
   },
-  marquee: ['Custom Grillz', 'Tennis Chains', 'Pavé Rings', 'Bespoke Commissions', 'Rose Gold', 'Diamonds'],
+  marquee: [
+    'Custom Grillz',
+    'Tennis Chains',
+    'Pendants',
+    'Pavé Rings',
+    'VVS Diamonds',
+    'Rose Gold',
+    'White Gold',
+    'Repairs & Re-plating',
+  ],
   finalCta: {
     eyebrow: 'Private consultations',
-    title: 'Come and see the stones\nin your own hands.',
-    body: 'Book an hour in the studio or a private video call. There is no obligation, simply good light, good advice and time to think.',
+    title: 'Got an idea?\nLet’s make it shine.',
+    body: 'Book a slot in the studio or a video call. No pressure, no obligation. Just straight talk and good stones.',
     cta: { label: 'Book a Consultation', href: '/book' },
   },
 };

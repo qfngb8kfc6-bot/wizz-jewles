@@ -4,33 +4,22 @@ import { AnimatePresence, motion } from 'motion/react';
 import { forwardRef, useId, type ComponentProps, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
-type Surface = 'dark' | 'light';
-
-const surfaceStyles: Record<Surface, { input: string; label: string; line: string; error: string; hint: string }> = {
-  dark: {
-    input: 'text-ivory caret-gold',
-    label: 'text-ivory/60 peer-focus:text-gold peer-[:not(:placeholder-shown)]:text-ivory/60',
-    line: 'bg-ivory/25',
-    error: 'text-error',
-    hint: 'text-ivory/50',
-  },
-  light: {
-    input: 'text-ink caret-gold-deep',
-    label: 'text-stone-deep peer-focus:text-gold-deep',
-    line: 'bg-ink/25',
-    error: 'text-error-deep',
-    hint: 'text-stone-deep',
-  },
+const s = {
+  input: 'text-ice caret-gold-bright',
+  label: 'text-smoke peer-focus:text-gold-bright',
+  line: 'bg-ice/20',
+  error: 'text-error',
+  hint: 'text-smoke',
 };
 
-export function FieldError({ id, message, surface = 'dark' }: { id: string; message?: string; surface?: Surface }) {
+export function FieldError({ id, message }: { id: string; message?: string }) {
   return (
     <AnimatePresence initial={false}>
       {message ? (
         <motion.p
           id={id}
           role="alert"
-          className={cn('pt-2 text-[0.8125rem]', surfaceStyles[surface].error)}
+          className={cn('pt-2 text-[0.8125rem]', s.error)}
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
@@ -44,15 +33,15 @@ export function FieldError({ id, message, surface = 'dark' }: { id: string; mess
 }
 
 /** Underline with a gold line that draws in from the left on focus. */
-function FocusLine({ surface, invalid }: { surface: Surface; invalid?: boolean }) {
+function FocusLine({ invalid }: { invalid?: boolean }) {
   return (
     <>
-      <span aria-hidden="true" className={cn('absolute inset-x-0 bottom-0 h-px', surfaceStyles[surface].line)} />
+      <span aria-hidden="true" className={cn('absolute inset-x-0 bottom-0 h-px', s.line)} />
       <span
         aria-hidden="true"
         className={cn(
           'absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 transition-transform duration-500 ease-lux peer-focus:scale-x-100',
-          invalid ? 'scale-x-100 bg-error' : surface === 'dark' ? 'bg-gold' : 'bg-gold-deep',
+          invalid ? 'scale-x-100 bg-error' : 'bg-gold-bright shadow-[0_0_8px_rgba(201,138,58,0.8)]',
         )}
       />
     </>
@@ -63,17 +52,15 @@ interface FieldProps extends Omit<ComponentProps<'input'>, 'placeholder'> {
   label: string;
   error?: string;
   hint?: ReactNode;
-  surface?: Surface;
 }
 
 /** Text input with floating label, gold focus line and animated inline error. */
 export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
-  { label, error, hint, surface = 'dark', className, id, required, ...rest },
+  { label, error, hint, className, id, required, ...rest },
   ref,
 ) {
   const autoId = useId();
   const inputId = id ?? autoId;
-  const s = surfaceStyles[surface];
   return (
     <div className={className}>
       <div className="relative">
@@ -93,7 +80,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
         <label
           htmlFor={inputId}
           className={cn(
-            'pointer-events-none absolute left-0 top-1 origin-left translate-y-0 scale-[0.8] transition-all duration-400 ease-lux',
+            'pointer-events-none absolute top-1 left-0 origin-left translate-y-0 scale-[0.8] transition-all duration-400 ease-lux',
             'peer-placeholder-shown:translate-y-5 peer-placeholder-shown:scale-100 peer-focus:translate-y-0 peer-focus:scale-[0.8]',
             s.label,
           )}
@@ -101,14 +88,14 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
           {label}
           {required ? <span aria-hidden="true"> *</span> : null}
         </label>
-        <FocusLine surface={surface} invalid={Boolean(error)} />
+        <FocusLine invalid={Boolean(error)} />
       </div>
       {hint && !error ? (
         <p id={`${inputId}-hint`} className={cn('pt-2 text-[0.8125rem]', s.hint)}>
           {hint}
         </p>
       ) : null}
-      <FieldError id={`${inputId}-error`} message={error} surface={surface} />
+      <FieldError id={`${inputId}-error`} message={error} />
     </div>
   );
 });
@@ -117,16 +104,14 @@ interface TextAreaProps extends Omit<ComponentProps<'textarea'>, 'placeholder'> 
   label: string;
   error?: string;
   hint?: ReactNode;
-  surface?: Surface;
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(
-  { label, error, hint, surface = 'dark', className, id, required, rows = 4, ...rest },
+  { label, error, hint, className, id, required, rows = 4, ...rest },
   ref,
 ) {
   const autoId = useId();
   const inputId = id ?? autoId;
-  const s = surfaceStyles[surface];
   return (
     <div className={className}>
       <div className="relative">
@@ -147,7 +132,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
         <label
           htmlFor={inputId}
           className={cn(
-            'pointer-events-none absolute left-0 top-1 origin-left scale-[0.8] transition-all duration-400 ease-lux',
+            'pointer-events-none absolute top-1 left-0 origin-left scale-[0.8] transition-all duration-400 ease-lux',
             'peer-placeholder-shown:translate-y-6 peer-placeholder-shown:scale-100 peer-focus:translate-y-0 peer-focus:scale-[0.8]',
             s.label,
           )}
@@ -155,14 +140,14 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
           {label}
           {required ? <span aria-hidden="true"> *</span> : null}
         </label>
-        <FocusLine surface={surface} invalid={Boolean(error)} />
+        <FocusLine invalid={Boolean(error)} />
       </div>
       {hint && !error ? (
         <p id={`${inputId}-hint`} className={cn('pt-2 text-[0.8125rem]', s.hint)}>
           {hint}
         </p>
       ) : null}
-      <FieldError id={`${inputId}-error`} message={error} surface={surface} />
+      <FieldError id={`${inputId}-error`} message={error} />
     </div>
   );
 });
@@ -170,22 +155,20 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function 
 interface SelectProps extends ComponentProps<'select'> {
   label: string;
   error?: string;
-  surface?: Surface;
   options: readonly { value: string; label: string }[];
   placeholder?: string;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
-  { label, error, surface = 'dark', className, id, options, placeholder = 'Select…', ...rest },
+  { label, error, className, id, options, placeholder = 'Select…', ...rest },
   ref,
 ) {
   const autoId = useId();
   const inputId = id ?? autoId;
-  const s = surfaceStyles[surface];
   return (
     <div className={className}>
       <div className="relative">
-        <label htmlFor={inputId} className={cn('absolute left-0 top-1 origin-left scale-[0.8]', s.label)}>
+        <label htmlFor={inputId} className={cn('absolute top-1 left-0 origin-left scale-[0.8]', s.label)}>
           {label}
         </label>
         <select
@@ -194,9 +177,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${inputId}-error` : undefined}
           className={cn(
-            'peer block min-h-14 w-full appearance-none bg-transparent pt-6 pb-2 pr-8 text-base outline-none focus-visible:outline-none',
+            'peer block min-h-14 w-full appearance-none bg-transparent pt-6 pr-8 pb-2 text-base outline-none focus-visible:outline-none',
             s.input,
-            '[&>option]:bg-ink [&>option]:text-ivory',
+            '[&>option]:bg-night-2 [&>option]:text-ice',
           )}
           {...rest}
         >
@@ -217,9 +200,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         >
           <path d="m6 9.5 6 6 6-6" />
         </svg>
-        <FocusLine surface={surface} invalid={Boolean(error)} />
+        <FocusLine invalid={Boolean(error)} />
       </div>
-      <FieldError id={`${inputId}-error`} message={error} surface={surface} />
+      <FieldError id={`${inputId}-error`} message={error} />
     </div>
   );
 });
@@ -227,11 +210,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
 interface CheckboxProps extends Omit<ComponentProps<'input'>, 'type'> {
   label: ReactNode;
   error?: string;
-  surface?: Surface;
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-  { label, error, surface = 'dark', className, id, ...rest },
+  { label, error, className, id, ...rest },
   ref,
 ) {
   const autoId = useId();
@@ -248,7 +230,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
             aria-describedby={error ? `${inputId}-error` : undefined}
             className={cn(
               'peer absolute inset-0 size-5 cursor-pointer appearance-none border transition-colors duration-300',
-              surface === 'dark' ? 'border-ivory/40 checked:border-gold' : 'border-ink/40 checked:border-gold-deep',
+              'border-ice/40 checked:border-gold-bright',
               error && 'border-error',
             )}
             {...rest}
@@ -258,7 +240,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
             viewBox="0 0 24 24"
             className={cn(
               'pointer-events-none size-3.5 scale-50 opacity-0 transition-all duration-300 ease-lux peer-checked:scale-100 peer-checked:opacity-100',
-              surface === 'dark' ? 'text-gold' : 'text-gold-deep',
+              'text-gold-bright',
             )}
             fill="none"
             stroke="currentColor"
@@ -267,11 +249,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
             <path d="m5 12.5 4.5 4.5L19 7.5" />
           </svg>
         </span>
-        <span className={cn('text-sm leading-relaxed', surface === 'dark' ? 'text-ivory/75' : 'text-stone-deep')}>
-          {label}
-        </span>
+        <span className="text-sm leading-relaxed text-ice/75">{label}</span>
       </label>
-      <FieldError id={`${inputId}-error`} message={error} surface={surface} />
+      <FieldError id={`${inputId}-error`} message={error} />
     </div>
   );
 });

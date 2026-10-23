@@ -11,7 +11,7 @@ import { MAX_UPLOAD_BYTES } from '@/lib/validation/booking';
  * ever served back through the authenticated admin route.
  */
 const LOCAL_DIR = path.join(process.cwd(), 'storage', 'uploads');
-const useBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+const blobEnabled = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 
 const SIGNATURES: { type: string; ext: string; test: (b: Uint8Array) => boolean }[] = [
   { type: 'image/jpeg', ext: 'jpg', test: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff },
@@ -45,7 +45,7 @@ export async function storeReferenceImage(file: File): Promise<{ key: string; ty
   const sig = sniffImageType(bytes);
   if (!sig) throw new UploadError('Please upload a JPG, PNG, WebP or HEIC image');
   const key = `references/${new Date().toISOString().slice(0, 7)}/${randomBytes(16).toString('hex')}.${sig.ext}`;
-  if (useBlob()) {
+  if (blobEnabled()) {
     await put(key, Buffer.from(bytes), { access: 'private', contentType: sig.type, addRandomSuffix: false });
   } else {
     const target = path.join(LOCAL_DIR, key);
@@ -57,7 +57,7 @@ export async function storeReferenceImage(file: File): Promise<{ key: string; ty
 
 export async function readReferenceImage(key: string): Promise<{ body: BodyInit; type: string } | null> {
   if (!/^references\/\d{4}-\d{2}\/[a-f0-9]{32}\.(jpg|png|webp|heic)$/.test(key)) return null;
-  if (useBlob()) {
+  if (blobEnabled()) {
     const res = await get(key, { access: 'private' });
     if (!res || res.statusCode !== 200) return null;
     return { body: res.stream, type: res.blob.contentType };

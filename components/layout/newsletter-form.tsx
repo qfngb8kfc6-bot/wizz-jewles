@@ -61,14 +61,7 @@ export function NewsletterForm() {
             <input type="text" tabIndex={-1} autoComplete="off" {...register('website')} />
           </label>
         </div>
-        <Button
-          type="submit"
-          variant="outline"
-          size="md"
-          state={pending ? 'loading' : state}
-          icon={<ArrowRight />}
-          className="w-full sm:w-auto"
-        >
+        <Button type="submit" size="md" state={pending ? 'loading' : state} icon={<ArrowRight />} className="w-full sm:w-auto">
           Subscribe
         </Button>
       </div>

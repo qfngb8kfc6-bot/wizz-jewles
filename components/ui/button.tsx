@@ -2,19 +2,18 @@
 
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
-import type { ComponentProps, ReactNode } from 'react';
+import { useState, type ComponentProps, type ReactNode } from 'react';
 import { Magnetic } from '@/components/motion/magnetic';
 import { Check } from '@/components/ui/icons';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/cn';
 
-type Variant = 'primary' | 'outline' | 'ghost';
-type Surface = 'dark' | 'light';
+type Variant = 'primary' | 'solid' | 'ghost';
 export type ButtonState = 'idle' | 'loading' | 'success' | 'error';
 
 interface BaseProps {
+  /** primary: dark with gold hairline · solid: gold fill (rare, high emphasis) · ghost: text only */
   variant?: Variant;
-  surface?: Surface;
   size?: 'md' | 'lg';
   magnetic?: boolean;
   state?: ButtonState;
@@ -28,47 +27,40 @@ interface BaseProps {
 type ButtonAsButton = BaseProps & Omit<ComponentProps<'button'>, keyof BaseProps> & { href?: undefined };
 type ButtonAsLink = BaseProps & Omit<ComponentProps<typeof Link>, keyof BaseProps> & { href: string };
 
-const styles: Record<Surface, Record<Variant, string>> = {
-  dark: {
-    primary: 'bg-ivory text-ink',
-    outline: 'border border-ivory/35 text-ivory hover:border-gold',
-    ghost: 'text-ivory',
-  },
-  light: {
-    primary: 'bg-ink text-ivory',
-    outline: 'border border-ink/30 text-ink hover:border-gold-deep',
-    ghost: 'text-ink',
-  },
+const variants: Record<Variant, string> = {
+  primary:
+    'border border-gold/70 bg-void text-gold-bright hover:border-gold-bright hover:shadow-[0_0_0_1px_rgba(224,185,121,0.35),0_0_24px_rgba(201,138,58,0.35)]',
+  solid: 'bg-gold text-void hover:bg-gold-bright hover:shadow-[0_0_28px_rgba(201,138,58,0.45)]',
+  ghost: 'text-ice hover:text-gold-bright',
 };
 
 export function buttonClasses({
   variant = 'primary',
-  surface = 'dark',
   size = 'lg',
   className,
-}: Pick<BaseProps, 'variant' | 'surface' | 'size' | 'className'>) {
+}: Pick<BaseProps, 'variant' | 'size' | 'className'>) {
   return cn(
     'group/btn relative isolate inline-flex select-none items-center justify-center gap-3 overflow-hidden',
-    'label transition-[border-color,color,background-color] duration-500 ease-lux',
+    'label transition-[border-color,color,background-color,box-shadow] duration-500 ease-lux',
     'disabled:cursor-not-allowed disabled:opacity-60',
     size === 'lg' ? 'min-h-14 px-8' : 'min-h-11 px-6',
-    styles[surface][variant],
+    variants[variant],
     className,
   );
 }
 
-/** Gold sheen that sweeps across on hover (transform-only). */
-function Sheen({ variant }: { variant: Variant }) {
+/** Light sweep that runs across on hover (transform-only). */
+function Sweep({ variant }: { variant: Variant }) {
   if (variant === 'ghost') return null;
   return (
     <span
       aria-hidden="true"
       className={cn(
-        'pointer-events-none absolute inset-0 -z-10 -translate-x-[110%] skew-x-[-18deg] transition-transform duration-[900ms] ease-lux',
-        'group-hover/btn:translate-x-[110%] motion-reduce:hidden',
+        'pointer-events-none absolute inset-y-0 left-0 -z-10 w-1/2 -translate-x-[120%] skew-x-[-18deg] motion-reduce:hidden',
+        'group-hover/btn:[animation:sweep_1s_cubic-bezier(0.22,1,0.36,1)_1]',
         variant === 'primary'
-          ? 'bg-[linear-gradient(100deg,transparent_15%,rgba(201,169,110,0.55)_45%,rgba(255,244,220,0.85)_50%,rgba(201,169,110,0.55)_55%,transparent_85%)]'
-          : 'bg-[linear-gradient(100deg,transparent_20%,rgba(201,169,110,0.22)_50%,transparent_80%)]',
+          ? 'bg-[linear-gradient(90deg,transparent,rgba(224,185,121,0.22),transparent)]'
+          : 'bg-[linear-gradient(90deg,transparent,rgba(255,240,207,0.6),transparent)]',
       )}
     />
   );
@@ -107,9 +99,8 @@ function Content({ state = 'idle', icon, children }: Pick<BaseProps, 'state' | '
 export function Button(props: ButtonAsButton | ButtonAsLink) {
   const {
     variant = 'primary',
-    surface = 'dark',
     size = 'lg',
-    magnetic = variant === 'primary',
+    magnetic = variant !== 'ghost',
     state = 'idle',
     icon,
     className,
@@ -117,19 +108,41 @@ export function Button(props: ButtonAsButton | ButtonAsLink) {
     cursor,
     ...rest
   } = props;
-  const classes = buttonClasses({ variant, surface, size, className });
+  const [bloom, setBloom] = useState(0);
+  const classes = buttonClasses({ variant, size, className });
   const inner = (
     <>
-      <Sheen variant={variant} />
+      <Sweep variant={variant} />
+      {/* Press bloom: a brief gold radial flash from the centre. */}
+      <AnimatePresence>
+        {bloom ? (
+          <motion.span
+            key={bloom}
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle,rgba(224,185,121,0.35),transparent_70%)]"
+            initial={{ opacity: 0.9, scale: 0.4 }}
+            animate={{ opacity: 0, scale: 1.6 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            onAnimationComplete={() => setBloom(0)}
+          />
+        ) : null}
+      </AnimatePresence>
       <Content state={state} icon={icon}>
         {children}
       </Content>
     </>
   );
+  const onPointerDown = () => setBloom(Date.now());
 
   const element =
     'href' in rest && rest.href !== undefined ? (
-      <Link {...(rest as Omit<ButtonAsLink, keyof BaseProps>)} className={classes} data-cursor={cursor}>
+      <Link
+        {...(rest as Omit<ButtonAsLink, keyof BaseProps>)}
+        className={classes}
+        data-cursor={cursor}
+        onPointerDown={onPointerDown}
+      >
         {inner}
       </Link>
     ) : (
@@ -138,6 +151,7 @@ export function Button(props: ButtonAsButton | ButtonAsLink) {
         {...(rest as Omit<ButtonAsButton, keyof BaseProps>)}
         className={classes}
         data-cursor={cursor}
+        onPointerDown={onPointerDown}
         aria-busy={state === 'loading' || undefined}
         disabled={(rest as ComponentProps<'button'>).disabled || state === 'loading'}
       >

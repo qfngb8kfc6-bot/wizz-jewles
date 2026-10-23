@@ -1,13 +1,14 @@
 /**
+ * TODO: client — every contact detail below is a placeholder.
  * Business details used across the site, emails, calendar invites and
  * structured data. Replace the placeholders with the studio's real details.
  */
 export const site = {
   name: 'Wizz Jewels',
   legalName: 'Wizz Jewels Ltd',
-  tagline: 'Fine jewellery, made by hand in London',
+  tagline: 'Custom grillz, chains and fine jewellery, handcrafted by Wizz.',
   description:
-    'Wizz Jewels is an independent London jeweller creating engagement rings, bespoke commissions and heirloom pieces by hand. Book a private consultation in the studio or by video.',
+    'Wizz Jewels makes custom grillz, diamond chains, pendants and statement rings by hand. Book a private consultation in the studio or by video.',
   email: 'hello@wizzjewels.co.uk', // PLACEHOLDER
   phone: '+44 20 7946 0321', // PLACEHOLDER (Ofcom drama range)
   phoneHref: 'tel:+442079460321',
@@ -25,20 +26,19 @@ export const site = {
     { days: 'Thursday', time: '10:00 – 19:00' },
     { days: 'Friday', time: '10:00 – 18:00' },
     { days: 'Saturday', time: '10:00 – 16:00' },
-    { days: 'Sunday – Monday', time: 'By appointment only' },
+    { days: 'Sunday – Monday', time: 'Closed' },
   ],
   social: [
     { name: 'Instagram', href: 'https://www.instagram.com/' },
     { name: 'Pinterest', href: 'https://www.pinterest.com/' },
     { name: 'TikTok', href: 'https://www.tiktok.com/' },
   ],
-  founded: 2011,
 } as const;
 
 export const navigation = [
   { href: '/collection', label: 'Collection' },
   { href: '/bespoke', label: 'Bespoke' },
-  { href: '/about', label: 'The Jeweller' },
+  { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ] as const;
 

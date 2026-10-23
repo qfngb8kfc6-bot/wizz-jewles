@@ -47,7 +47,9 @@ export function weekdayOf(date: DateKey): Weekday {
 }
 
 export function addDaysToKey(date: DateKey, days: number): DateKey {
-  return addDays(new Date(`${date}T12:00:00Z`), days).toISOString().slice(0, 10);
+  return addDays(new Date(`${date}T12:00:00Z`), days)
+    .toISOString()
+    .slice(0, 10);
 }
 
 /** Converts a wall-clock time on a studio date into a UTC instant. */
@@ -121,9 +123,7 @@ export function availableDaysInMonth(month: string, durationMinutes: number, ctx
 /** Server-side guard: is this exact instant an offered, free start time? */
 export function isSlotBookable(start: Date, durationMinutes: number, ctx: AvailabilityContext): boolean {
   const date = dateKeyOf(start, ctx.config.timeZone);
-  return generateDaySlots(date, durationMinutes, ctx).some(
-    (s) => s.available && new Date(s.start).getTime() === start.getTime(),
-  );
+  return generateDaySlots(date, durationMinutes, ctx).some((s) => s.available && new Date(s.start).getTime() === start.getTime());
 }
 
 /** UTC range covering a studio date, padded so buffers that spill over are included. */

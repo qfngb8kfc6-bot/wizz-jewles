@@ -54,16 +54,16 @@ export function CookieBanner() {
         <motion.div
           role="region"
           aria-label="Cookie notice"
-          className="fixed inset-x-4 bottom-4 z-[120] sm:inset-x-auto sm:left-6 sm:bottom-6 sm:max-w-md"
+          className="fixed inset-x-4 bottom-4 z-[120] sm:inset-x-auto sm:bottom-6 sm:left-6 sm:max-w-md"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0, transition: { delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
           exit={{ opacity: 0, y: 20, transition: { duration: 0.35 } }}
         >
-          <div className="border border-gold/30 bg-ink-soft/95 p-6 text-ivory shadow-2xl shadow-black/50 backdrop-blur-md">
+          <div className="border border-gold/30 bg-night-2/95 p-6 text-ice shadow-2xl shadow-black/50 backdrop-blur-md">
             <p className="label text-gold">A note on cookies</p>
-            <p className="mt-3 text-sm leading-relaxed text-ivory/75">
+            <p className="mt-3 text-sm leading-relaxed text-ice/75">
               We use only what is needed to run this site, and nothing that follows you elsewhere.{' '}
-              <Link href="/cookies" className="text-ivory underline underline-offset-4 hover:text-gold">
+              <Link href="/cookies" className="text-ice underline underline-offset-4 hover:text-gold">
                 Read more
               </Link>
             </p>
@@ -71,7 +71,7 @@ export function CookieBanner() {
               <Button size="md" magnetic={false} onClick={() => choose('all')}>
                 Accept
               </Button>
-              <Button size="md" variant="outline" onClick={() => choose('essential')}>
+              <Button size="md" variant="ghost" onClick={() => choose('essential')}>
                 Essential only
               </Button>
             </div>
@@ -84,7 +84,7 @@ export function CookieBanner() {
 
 export function CookieSettingsLink() {
   return (
-    <button type="button" onClick={() => write(null)} className="link-lux hover:text-ivory">
+    <button type="button" onClick={() => write(null)} className="link-lux hover:text-ice">
       Cookie settings
     </button>
   );

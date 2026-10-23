@@ -47,4 +47,3 @@ export async function sendContactMessage(
   }
   return { ok: true, message: `Thank you, ${data.name.split(' ')[0]}. We will reply within one working day.` };
 }
-

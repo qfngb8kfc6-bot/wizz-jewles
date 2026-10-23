@@ -22,11 +22,10 @@ function CursorInner() {
   const y = useMotionValue(-100);
   const ringX = useSpring(x, { stiffness: 320, damping: 32, mass: 0.6 });
   const ringY = useSpring(y, { stiffness: 320, damping: 32, mass: 0.6 });
-  const [state, setState] = useState<{ active: boolean; label: string | null; visible: boolean; light: boolean }>({
+  const [state, setState] = useState<{ active: boolean; label: string | null; visible: boolean }>({
     active: false,
     label: null,
     visible: false,
-    light: false,
   });
 
   useEffect(() => {
@@ -37,12 +36,11 @@ function CursorInner() {
       const target = e.target instanceof Element ? e.target : null;
       const labelled = target?.closest<HTMLElement>('[data-cursor]');
       const interactive = target?.closest('a, button, [role="button"], input, select, textarea, label, summary');
-      const light = Boolean(target?.closest('[data-surface="light"]'));
       const label = labelled?.dataset.cursor || null;
       setState((s) =>
-        s.active === Boolean(interactive || labelled) && s.label === label && s.visible && s.light === light
+        s.active === Boolean(interactive || labelled) && s.label === label && s.visible
           ? s
-          : { active: Boolean(interactive || labelled), label, visible: true, light },
+          : { active: Boolean(interactive || labelled), label, visible: true },
       );
     };
     const onLeave = () => setState((s) => ({ ...s, visible: false }));
@@ -56,12 +54,11 @@ function CursorInner() {
 
   // Ring is drawn at 48px and scaled (transform-only) to its state size.
   const scale = state.label ? 1.75 : state.active ? 1.1 : 0.62;
-  const tone = state.light ? 'border-gold-deep' : 'border-gold';
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[200]">
       <motion.div
-        className={`absolute top-0 left-0 size-1.5 rounded-full ${state.light ? 'bg-gold-deep' : 'bg-gold'}`}
+        className="absolute top-0 left-0 size-1.5 rounded-full bg-gold-bright shadow-[0_0_8px_rgba(224,185,121,0.9)]"
         style={{ x, y, translateX: '-50%', translateY: '-50%' }}
         animate={{ opacity: state.visible && !state.label ? 1 : 0 }}
         transition={{ duration: 0.2 }}
@@ -73,12 +70,12 @@ function CursorInner() {
         transition={{ duration: 0.25 }}
       >
         <motion.span
-          className={`absolute inset-0 rounded-full border ${tone}`}
+          className="absolute inset-0 rounded-full border border-gold/80"
           animate={{ scale }}
           transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         />
         <motion.span
-          className="absolute inset-0 rounded-full bg-ink/75"
+          className="absolute inset-0 rounded-full bg-void/80"
           animate={{ scale, opacity: state.label ? 1 : 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         />
@@ -86,7 +83,7 @@ function CursorInner() {
           {state.label ? (
             <motion.span
               key={state.label}
-              className="label relative text-[10px] text-ivory"
+              className="label relative text-[10px] text-ice"
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.7 }}

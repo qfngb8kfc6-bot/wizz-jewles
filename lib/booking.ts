@@ -169,7 +169,9 @@ export async function setBookingStatus(id: string, status: Booking['status']): P
   // Reinstating a cancelled booking must reclaim its cells, which may since have been taken.
   try {
     return await db.$transaction(async (tx) => {
-      await tx.bookingSlot.createMany({ data: slotRows(current.startsAt, current.durationMinutes).map((r) => ({ ...r, bookingId: id })) });
+      await tx.bookingSlot.createMany({
+        data: slotRows(current.startsAt, current.durationMinutes).map((r) => ({ ...r, bookingId: id })),
+      });
       return tx.booking.update({ where: { id }, data: { status, cancelledAt: null } });
     });
   } catch (error) {

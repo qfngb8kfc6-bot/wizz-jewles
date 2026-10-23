@@ -19,7 +19,7 @@ function secret() {
 export function verifyAdminPassword(password: string): boolean {
   const stored = process.env.ADMIN_PASSWORD_HASH;
   if (!stored) return false;
-  const [scheme, salt, hash] = stored.split(":");
+  const [scheme, salt, hash] = stored.split(':');
   if (scheme !== 'scrypt' || !salt || !hash) return false;
   const expected = Buffer.from(hash, 'hex');
   const actual = scryptSync(password, Buffer.from(salt, 'hex'), expected.length);

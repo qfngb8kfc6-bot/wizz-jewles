@@ -1,7 +1,13 @@
 import type { SVGProps } from 'react';
 
 type P = SVGProps<SVGSVGElement>;
-const base = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.25, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
+const base = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.25,
+  strokeLinecap: 'round',
+  strokeLinejoin: 'round',
+} as const;
 
 export const ArrowRight = (p: P) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" {...base} {...p}>

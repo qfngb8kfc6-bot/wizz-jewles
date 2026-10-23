@@ -26,7 +26,7 @@ export function Marquee({ items, duration = 48, className }: MarqueeProps) {
   return (
     <div className={cn('group relative flex overflow-hidden', className)}>
       <div
-        className="animate-marquee flex w-max group-hover:[animation-play-state:paused]"
+        className="flex w-max animate-marquee group-hover:[animation-play-state:paused]"
         style={{ ['--marquee-duration' as string]: `${duration}s` }}
       >
         {track(false)}

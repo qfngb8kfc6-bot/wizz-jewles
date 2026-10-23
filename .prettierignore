@@ -1,0 +1,11 @@
+node_modules
+.next
+lib/generated
+prisma/migrations
+public
+wizz-assets
+package-lock.json
+.outbox
+storage
+playwright-report
+test-results

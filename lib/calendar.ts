@@ -14,7 +14,10 @@ export interface CalendarEvent {
 }
 
 function stamp(d: Date) {
-  return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  return d
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, '');
 }
 
 /** RFC 5545 text escaping. */

@@ -67,7 +67,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, x: 40, transition: { duration: 0.3 } }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="pointer-events-auto flex w-full max-w-sm items-start gap-4 border border-gold/30 bg-ink-soft/95 p-5 text-ivory shadow-2xl shadow-black/40 backdrop-blur-md"
+              className="pointer-events-auto flex w-full max-w-sm items-start gap-4 border border-gold/30 bg-night-2/95 p-5 text-ice shadow-2xl shadow-black/40 backdrop-blur-md"
             >
               <span
                 className={cn(
@@ -79,12 +79,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               </span>
               <div className="flex-1">
                 <p className="text-sm font-medium">{t.title}</p>
-                {t.description ? <p className="mt-1 text-sm text-ivory/65">{t.description}</p> : null}
+                {t.description ? <p className="mt-1 text-sm text-ice/65">{t.description}</p> : null}
               </div>
               <button
                 type="button"
                 onClick={() => dismiss(t.id)}
-                className="-m-2 flex size-9 items-center justify-center text-ivory/50 transition-colors hover:text-ivory"
+                className="-m-2 flex size-9 items-center justify-center text-ice/50 transition-colors hover:text-ice"
                 aria-label="Dismiss notification"
               >
                 <Close className="size-4" />
