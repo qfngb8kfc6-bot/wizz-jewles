@@ -27,7 +27,7 @@ export function Featured() {
                 </Button>
               </div>
             </Reveal>
-            <LineDiamond className="mt-12 hidden size-24 lg:block" />
+            <LineDiamond className="mt-12 hidden size-24 lg:block" strokeWidth={1} />
           </div>
         }
       >

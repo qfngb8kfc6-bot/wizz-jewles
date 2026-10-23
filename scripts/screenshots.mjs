@@ -34,6 +34,7 @@ for (const [label, viewport] of [
   await context.addInitScript(() => {
     try {
       sessionStorage.setItem('wj_intro_seen', '1');
+      localStorage.setItem('wj_consent', JSON.stringify({ value: 'essential', at: Date.now() }));
     } catch {
       // cross-origin frames (e.g. the map) have no storage access
     }

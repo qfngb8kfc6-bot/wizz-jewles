@@ -26,6 +26,11 @@ export function fmtTzName(iso: string, timeZone: string) {
   return part?.value ?? timeZone;
 }
 
+/** True when the visitor's wall-clock time for this instant differs from the studio's. */
+export function localDiffers(iso: string, timeZone: string) {
+  return timeZone !== STUDIO_TZ && fmtDateLong(iso, timeZone) + fmtTime(iso, timeZone) !== fmtDateLong(iso) + fmtTime(iso);
+}
+
 /** YYYY-MM-DD → Date at noon UTC (safe for calendar arithmetic). */
 export function keyToDate(key: string) {
   return new Date(`${key}T12:00:00Z`);

@@ -1,5 +1,4 @@
 import { IgniteText } from '@/components/motion/ignite-text';
-import { Reveal } from '@/components/motion/reveal';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
 import { Logo } from '@/components/ui/logo';
@@ -23,21 +22,21 @@ export function Hero() {
 
       <div className="container-lux grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="order-2 lg:order-1 lg:col-span-7">
-          <Reveal delay={0.1} y={12}>
-            <p className="label text-gold-bright">{h.eyebrow}</p>
-          </Reveal>
+          <p className="hero-rise label text-gold-bright" style={{ animationDelay: '0.1s' }}>
+            {h.eyebrow}
+          </p>
           <IgniteText text={h.headline} className="mt-6 font-display text-display-xl font-light tracking-tight" delay={0.25} />
-          <Reveal delay={0.9} y={16}>
-            <p className="mt-8 max-w-md text-lg leading-relaxed text-ice/80">{h.intro}</p>
-          </Reveal>
-          <Reveal delay={1.1} y={16} className="mt-10 flex flex-wrap items-center gap-4">
+          <p className="hero-rise mt-8 max-w-md text-lg leading-relaxed text-ice/80" style={{ animationDelay: '0.5s' }}>
+            {h.intro}
+          </p>
+          <div className="hero-rise mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: '0.65s' }}>
             <Button href={h.primaryCta.href} icon={<ArrowRight />}>
               {h.primaryCta.label}
             </Button>
             <Button href={h.secondaryCta.href} variant="ghost" icon={<ArrowRight />}>
               {h.secondaryCta.label}
             </Button>
-          </Reveal>
+          </div>
         </div>
 
         <div className="order-1 flex justify-center lg:order-2 lg:col-span-5">

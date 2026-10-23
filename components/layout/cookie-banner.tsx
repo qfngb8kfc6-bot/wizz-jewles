@@ -59,19 +59,19 @@ export function CookieBanner() {
           animate={{ opacity: 1, y: 0, transition: { delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
           exit={{ opacity: 0, y: 20, transition: { duration: 0.35 } }}
         >
-          <div className="border border-gold/30 bg-night-2/95 p-6 text-ice shadow-2xl shadow-black/50 backdrop-blur-md">
-            <p className="label text-gold">A note on cookies</p>
-            <p className="mt-3 text-sm leading-relaxed text-ice/75">
+          <div className="border border-gold/30 bg-night-2/95 p-4 text-ice shadow-2xl shadow-black/50 backdrop-blur-md sm:p-6">
+            <p className="label text-gold-bright">A note on cookies</p>
+            <p className="mt-2 text-sm leading-relaxed text-ice/75 sm:mt-3">
               We use only what is needed to run this site, and nothing that follows you elsewhere.{' '}
               <Link href="/cookies" className="text-ice underline underline-offset-4 hover:text-gold">
-                Read more
+                Read the cookie notice
               </Link>
             </p>
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-4 flex flex-nowrap items-center gap-2 sm:mt-5 sm:gap-3">
               <Button size="md" magnetic={false} onClick={() => choose('all')}>
                 Accept
               </Button>
-              <Button size="md" variant="ghost" onClick={() => choose('essential')}>
+              <Button size="md" variant="ghost" className="px-4" onClick={() => choose('essential')}>
                 Essential only
               </Button>
             </div>

@@ -17,6 +17,13 @@ export const metadata = pageMetadata({
   path: '/bespoke',
 });
 
+/** Focal points for the tight close-up crops (grillz teeth, chain links, ring dome). */
+const closeUpFocus = [
+  { x: 48, y: 58 },
+  { x: 58, y: 80 },
+  { x: 44, y: 46 },
+];
+
 export default function BespokePage() {
   const faqLd = {
     '@context': 'https://schema.org',
@@ -33,7 +40,7 @@ export default function BespokePage() {
         <div className="container-lux grid grid-cols-3 gap-3 sm:gap-6">
           {pieces.map((p, i) => (
             <div key={p.slug} className="bg-night p-1.5 sm:p-3" style={{ marginTop: i === 1 ? '3rem' : 0 }}>
-              <Photo image={p.images[0]} ratio="3 / 4" zoom={1.6} sizes="(min-width: 640px) 30vw, 32vw" />
+              <Photo image={p.images[0]} ratio="3 / 4" zoom={1.6} focus={closeUpFocus[i]} sizes="(min-width: 640px) 30vw, 32vw" />
             </div>
           ))}
         </div>

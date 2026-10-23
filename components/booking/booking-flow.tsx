@@ -25,7 +25,7 @@ import { ease, slideStep } from '@/lib/motion';
 import { ACCEPTED_IMAGE_TYPES, detailsStepSchema, validateImageFile, type DetailsStep } from '@/lib/validation/booking';
 import { SlotPicker } from './slot-picker';
 import { BookingSuccess, type BookingResult } from './success';
-import { fmtDateLong, fmtTime, fmtTzName, STUDIO_TZ, visitorTimeZone } from './time';
+import { fmtDateLong, fmtTime, fmtTzName, localDiffers, STUDIO_TZ, visitorTimeZone } from './time';
 
 const STEPS = ['Consultation', 'Date & time', 'Your details', 'Review'] as const;
 
@@ -415,7 +415,7 @@ export function BookingFlow({ initialType, initialPiece }: BookingFlowProps) {
                     <ReviewRow label="When" onEdit={() => go(1)}>
                       <span hidden data-testid="review-start" data-start={start} />
                       {fmtDateLong(start)} at {fmtTime(start)} {fmtTzName(start, STUDIO_TZ)}
-                      {localTz !== STUDIO_TZ ? (
+                      {localDiffers(start, localTz) ? (
                         <span className="block text-sm text-smoke">
                           Your time: {fmtDateLong(start, localTz)} at {fmtTime(start, localTz)} {fmtTzName(start, localTz)}
                         </span>

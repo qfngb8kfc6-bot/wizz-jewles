@@ -1,9 +1,8 @@
 import { CookieBanner } from '@/components/layout/cookie-banner';
+import { ClientExtras } from '@/components/layout/client-extras';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
-import { Cursor } from '@/components/motion/cursor';
 import { ScrollProgress } from '@/components/motion/scroll-progress';
-import { SmoothScroll } from '@/components/motion/smooth-scroll';
 import { Intro } from '@/components/visual/intro';
 import { Suspense } from 'react';
 
@@ -18,7 +17,7 @@ export default function SiteLayout({ children }: LayoutProps<'/'>) {
       </a>
       <Intro />
       <Suspense fallback={null}>
-        <SmoothScroll />
+        <ClientExtras />
       </Suspense>
       <ScrollProgress />
       <Header />
@@ -33,7 +32,6 @@ export default function SiteLayout({ children }: LayoutProps<'/'>) {
       </main>
       <Footer />
       <CookieBanner />
-      <Cursor />
     </>
   );
 }

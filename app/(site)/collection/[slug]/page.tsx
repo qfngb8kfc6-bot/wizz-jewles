@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { Reveal } from '@/components/motion/reveal';
-import { SplitText } from '@/components/motion/split-text';
+import { RiseText } from '@/components/motion/rise-text';
 import { Gallery } from '@/components/sections/collection/gallery';
 import { PieceCard } from '@/components/sections/collection/piece-card';
 import { Button } from '@/components/ui/button';
@@ -85,7 +85,7 @@ async function PieceContent({ params }: Pick<PageProps<'/collection/[slug]'>, 'p
 
             <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start">
               <p className="label text-gold-bright">{piece.category}</p>
-              <SplitText as="h1" text={piece.name} immediate className="mt-4 font-display text-display-lg font-light" />
+              <RiseText text={piece.name} className="mt-4 font-display text-display-lg font-light" />
               <Reveal delay={0.3}>
                 <p className="mt-4 text-smoke">{piece.material}</p>
                 <p className="mt-8 font-display text-2xl leading-snug text-ice italic">{piece.summary}</p>

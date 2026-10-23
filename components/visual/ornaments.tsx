@@ -14,30 +14,39 @@ const draw = {
 };
 
 /** Thin gold line-art diamond (rhombus frame with facet lines), drawn on when scrolled into view. */
-export function LineDiamond({ className, facets = true }: { className?: string; facets?: boolean }) {
+export function LineDiamond({
+  className,
+  facets = true,
+  strokeWidth = 0.5,
+}: {
+  className?: string;
+  facets?: boolean;
+  /** In viewBox units (100 = full width); 0.5 is about 1px at 200px wide. */
+  strokeWidth?: number;
+}) {
   return (
     <motion.svg
       viewBox="0 0 100 100"
       aria-hidden="true"
-      className={cn('glow-line text-gold', className)}
+      className={cn('glow-line overflow-visible text-gold', className)}
       fill="none"
       stroke="currentColor"
-      strokeWidth="0.75"
+      strokeWidth={strokeWidth}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.4 }}
     >
-      <motion.path d="M50 2 L98 50 L50 98 L2 50 Z" variants={draw} custom={0} vectorEffect="non-scaling-stroke" />
+      <motion.path d="M50 2 L98 50 L50 98 L2 50 Z" variants={draw} custom={0} />
       {facets ? (
         <>
           <motion.path
             d="M50 14 L86 50 L50 86 L14 50 Z"
             variants={draw}
             custom={1}
-            vectorEffect="non-scaling-stroke"
+
             opacity={0.5}
           />
-          <motion.path d="M2 50 H98 M50 2 V98" variants={draw} custom={2} vectorEffect="non-scaling-stroke" opacity={0.25} />
+          <motion.path d="M2 50 H98 M50 2 V98" variants={draw} custom={2} opacity={0.25} />
         </>
       ) : null}
     </motion.svg>

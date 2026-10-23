@@ -547,3 +547,21 @@ html.intro .hero-fade {
     animation: none;
   }
 }
+
+/* Supporting hero lines: transform-led rise so the text paints on first frame (LCP). */
+.hero-rise {
+  animation: hero-rise 1s var(--ease-lux) both;
+}
+@keyframes hero-rise {
+  from {
+    transform: translateY(18px);
+  }
+}
+html.intro .hero-rise {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}

@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { BookingFlow } from '@/components/booking/booking-flow';
-import { Reveal } from '@/components/motion/reveal';
-import { SplitText } from '@/components/motion/split-text';
+import { RiseText } from '@/components/motion/rise-text';
 import { Spinner } from '@/components/ui/spinner';
 import { OrbitRing } from '@/components/visual/ornaments';
 import { Starfield } from '@/components/visual/starfield';
@@ -21,15 +20,11 @@ export default function BookPage({ searchParams }: PageProps<'/book'>) {
       <OrbitRing className="pointer-events-none absolute top-24 -right-40 hidden w-[44rem] opacity-50 lg:block" />
       <div className="container-lux relative">
         <div className="max-w-3xl">
-          <Reveal y={12}>
-            <p className="label text-gold-bright">Private consultation</p>
-          </Reveal>
-          <SplitText as="h1" text={'Book a consultation'} immediate className="mt-6 font-display text-display-lg font-light" />
-          <Reveal delay={0.3}>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ice/75">
-              In the studio or on video. Four quick steps, and you will get a confirmation and calendar invite straight away.
-            </p>
-          </Reveal>
+          <p className="hero-rise label text-gold-bright">Private consultation</p>
+          <RiseText text="Book a consultation" className="mt-6 font-display text-display-lg font-light" />
+          <p className="hero-rise mt-6 max-w-xl text-lg leading-relaxed text-ice/75" style={{ animationDelay: '0.3s' }}>
+            In the studio or on video. Four quick steps, and you will get a confirmation and calendar invite straight away.
+          </p>
         </div>
         <div className="mt-16 max-w-5xl border border-line bg-night/80 p-5 backdrop-blur-sm sm:p-10 lg:p-14">
           <Suspense

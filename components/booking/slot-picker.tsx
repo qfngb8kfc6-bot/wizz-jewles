@@ -13,8 +13,8 @@ import {
   fmtTime,
   fmtTzName,
   keyToDate,
+  localDiffers,
   monthLabel,
-  STUDIO_TZ,
   studioToday,
   visitorTimeZone,
 } from './time';
@@ -56,7 +56,8 @@ export function SlotPicker({
   const [error, setError] = useState<string | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const tz = useMemo(() => visitorTimeZone(), []);
-  const showLocal = tz !== STUDIO_TZ;
+
+  const showLocal = useMemo(() => (slots ?? []).some((s) => localDiffers(s.start, tz)), [slots, tz]);
 
   const qs = useCallback(
     (extra: string) =>

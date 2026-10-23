@@ -37,7 +37,7 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-            <div>
+            <div className="max-sm:order-3 max-sm:col-span-2">
               <h2 className="label text-ice/60">Visit</h2>
               <address className="mt-6 space-y-3 text-sm text-ice/85 not-italic">
                 <p>
@@ -53,7 +53,7 @@ export function Footer() {
                   </a>
                 </p>
                 <p>
-                  <a href={`mailto:${site.email}`} className="link-lux break-all">
+                  <a href={`mailto:${site.email}`} className="link-lux">
                     {site.email}
                   </a>
                 </p>
