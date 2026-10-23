@@ -134,7 +134,7 @@ async function PieceContent({ params }: Pick<PageProps<'/collection/[slug]'>, 'p
           </h2>
           <div className="mt-14 grid gap-14 sm:grid-cols-2 lg:gap-16">
             {others.map((p) => (
-              <PieceCard key={p.slug} piece={p} image={p.images[1]} ratio="4 / 5" sizes="(min-width: 640px) 45vw, 92vw" />
+              <PieceCard key={p.slug} piece={p} image={p.images[0]} ratio="4 / 3" sizes="(min-width: 640px) 45vw, 92vw" />
             ))}
           </div>
         </div>

@@ -75,10 +75,11 @@ export function BookingFlow({ initialType, initialPiece }: BookingFlowProps) {
 
   const type = typeId ? getConsultationType(typeId) : undefined;
 
-  // Move focus to the step heading on every step change (screen readers + keyboard).
+  // Step headings are focused when each step finishes entering (see onAnimationComplete below).
+  // The confirmation replaces the flow without a step animation, so focus it directly.
   useEffect(() => {
-    headingRef.current?.focus({ preventScroll: true });
-  }, [step, result]);
+    if (result) headingRef.current?.focus({ preventScroll: true });
+  }, [result]);
 
   const go = (next: number) => {
     setStepError(null);
@@ -237,6 +238,11 @@ export function BookingFlow({ initialType, initialPiece }: BookingFlowProps) {
             animate="center"
             exit="exit"
             aria-labelledby="step-title"
+            // Focus the new step's heading once it has finished entering (the outgoing step
+            // is still mounted while it exits), so keyboard and screen-reader users follow along.
+            onAnimationComplete={(definition) => {
+              if (definition === 'center') headingRef.current?.focus({ preventScroll: true });
+            }}
           >
             <h2 id="step-title" ref={headingRef} tabIndex={-1} className="font-display text-display-sm text-ice outline-none">
               {['What can we make for you?', 'Pick your moment', 'A little about you', 'Check and confirm'][step]}

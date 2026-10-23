@@ -29,11 +29,14 @@ export function Hero() {
           <p className="hero-rise mt-8 max-w-md text-lg leading-relaxed text-ice/80" style={{ animationDelay: '0.5s' }}>
             {h.intro}
           </p>
-          <div className="hero-rise mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: '0.65s' }}>
+          <div
+            className="hero-rise mt-10 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4"
+            style={{ animationDelay: '0.65s' }}
+          >
             <Button href={h.primaryCta.href} icon={<ArrowRight />}>
               {h.primaryCta.label}
             </Button>
-            <Button href={h.secondaryCta.href} variant="ghost" icon={<ArrowRight />}>
+            <Button href={h.secondaryCta.href} variant="ghost" icon={<ArrowRight />} className="max-sm:-ml-8">
               {h.secondaryCta.label}
             </Button>
           </div>

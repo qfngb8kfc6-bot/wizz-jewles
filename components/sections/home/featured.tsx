@@ -8,7 +8,12 @@ import { home } from '@/content/home';
 import { pieces } from '@/content/pieces';
 import { HorizontalTrack } from './horizontal-track';
 
-const ratios = ['5 / 4', '4 / 5', '1 / 1'];
+/**
+ * Each card uses the piece's hero shot at a frame close to its native shape,
+ * so the jewellery fills the frame without upscaling: the chain in particular
+ * always uses the landscape shot (the portrait one is mostly T-shirt).
+ */
+const cardRatio = { landscape: '3 / 2', square: '1 / 1', portrait: '4 / 5' } as const;
 
 export function Featured() {
   const f = home.featured;
@@ -31,12 +36,12 @@ export function Featured() {
           </div>
         }
       >
-        {pieces.map((piece, i) => (
+        {pieces.map((piece) => (
           <PieceCard
             key={piece.slug}
             piece={piece}
-            image={i === 1 ? piece.images[1] : piece.images[0]}
-            ratio={ratios[i]}
+            image={piece.images[0]}
+            ratio={cardRatio[piece.images[0].aspect]}
             sizes="(min-width: 1024px) 34vw, 82vw"
           />
         ))}

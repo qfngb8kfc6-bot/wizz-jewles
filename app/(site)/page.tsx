@@ -6,6 +6,7 @@ import { Hero } from '@/components/sections/home/hero';
 import { ProcessTimeline } from '@/components/sections/home/process-preview';
 import { Testimonials } from '@/components/sections/home/testimonials';
 import { home } from '@/content/home';
+import { testimonials } from '@/content/testimonials';
 import { site } from '@/content/site';
 import { pageMetadata } from '@/lib/seo';
 
@@ -24,7 +25,7 @@ export default function HomePage() {
       <Featured />
       <Craft />
       <ProcessTimeline eyebrow={home.process.eyebrow} title={home.process.title} cta={home.process.cta} />
-      <Testimonials eyebrow={home.testimonials.eyebrow} />
+      {testimonials.published ? <Testimonials eyebrow={home.testimonials.eyebrow} /> : null}
       <CtaBand {...home.finalCta} />
     </>
   );

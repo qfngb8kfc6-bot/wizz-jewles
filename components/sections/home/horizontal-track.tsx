@@ -57,7 +57,7 @@ export function HorizontalTrack({ intro, children }: { intro: ReactNode; childre
   }, []);
 
   return (
-    <div ref={section} className="relative overflow-hidden py-24 lg:flex lg:h-svh lg:items-center lg:py-0">
+    <div ref={section} className="relative overflow-hidden py-16 sm:py-24 lg:flex lg:h-svh lg:items-center lg:py-0">
       {/* One DOM for both layouts: stacked + swipe row on mobile, a single pinned row on desktop. */}
       <div
         ref={track}

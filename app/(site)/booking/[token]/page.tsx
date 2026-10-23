@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Suspense } from 'react';
 import { ManageBooking } from '@/components/booking/manage-booking';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { getConsultationType, meetingFormats } from '@/config/consultations';
-import { site } from '@/content/site';
 import { findBookingByToken } from '@/lib/booking';
 
 export const metadata: Metadata = { title: 'Manage your booking', robots: { index: false, follow: false } };
@@ -41,14 +41,10 @@ async function BookingDetails({ params }: Pick<PageProps<'/booking/[token]'>, 'p
           We could not find a booking for this link. It may have been mistyped or has expired.
         </p>
         <p className="text-ice/70">
-          Need help? Call{' '}
-          <a href={site.phoneHref} className="text-gold-bright underline">
-            {site.phone}
-          </a>{' '}
-          or email{' '}
-          <a href={`mailto:${site.email}`} className="text-gold-bright underline">
-            {site.email}
-          </a>
+          Need help?{' '}
+          <Link href="/contact" className="text-gold-bright underline">
+            Send us a message
+          </Link>
           .
         </p>
         <Button href="/book">Book a consultation</Button>
