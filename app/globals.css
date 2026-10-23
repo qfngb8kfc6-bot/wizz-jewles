@@ -1,0 +1,567 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Design tokens — Wizz Jewels (cosmic gold)
+   Sampled from the logo. The site is dark-first throughout; `void` must
+   stay exactly #000000 because every logo file sits on pure black.
+   Contrast on void: ice 18:1 · gold-bright 11.4:1 · gold 7.2:1 ·
+   smoke 6.1:1 · gold-deep 4.3:1 (large text / decoration only).
+------------------------------------------------------------------- */
+@theme {
+  --color-*: initial;
+  --color-void: #000000;
+  --color-night: #0a0a0c;
+  --color-night-2: #141418;
+  --color-line: #26262c;
+  --color-gold-bright: #e0b979;
+  --color-gold: #c98a3a;
+  --color-gold-deep: #a16320;
+  --color-ember: #5b300a;
+  --color-ice: #e9eef5;
+  --color-smoke: #8a8a93;
+  --color-error: #f0a08c;
+  --color-success: #9fd8b4;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: var(--font-manrope), 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-lux-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --tracking-label: 0.28em;
+
+  --text-display-xl: clamp(3rem, 1.4rem + 6.6vw, 8.5rem);
+  --text-display-xl--line-height: 0.95;
+  --text-display-lg: clamp(2.5rem, 1.6rem + 3.8vw, 5.5rem);
+  --text-display-lg--line-height: 1;
+  --text-display-md: clamp(2rem, 1.5rem + 2.2vw, 3.75rem);
+  --text-display-md--line-height: 1.05;
+  --text-display-sm: clamp(1.6rem, 1.3rem + 1.2vw, 2.4rem);
+  --text-display-sm--line-height: 1.12;
+
+  --animate-marquee: marquee var(--marquee-duration, 48s) linear infinite;
+  --animate-shake: shake 0.42s var(--ease-lux) both;
+  --animate-orbit: orbit 40s linear infinite;
+  --animate-breathe: breathe 7s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* A light sweep crossing an element once (used on logo + buttons). */
+@keyframes sweep {
+  from {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+/* Four-point sparkle glint: grows, rotates a touch, fades. */
+@keyframes glint {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(20deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) rotate(45deg);
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-void);
+    color: var(--color-ice);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scrollbar-gutter: stable;
+    color-scheme: dark;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-void);
+    color: var(--color-ice);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-void);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-gold-bright);
+    outline-offset: 4px;
+  }
+
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* If JS never runs, reveal-animated content must still be visible. */
+  html.no-js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+
+  .container-lux {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 96rem;
+    padding-inline: clamp(1.25rem, 4vw, 4rem);
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--color-gold) 70%, transparent) 20%,
+      color-mix(in oklab, var(--color-gold) 70%, transparent) 80%,
+      transparent
+    );
+  }
+
+  /* Neon-gold glow echoing the logo. Use on key moments only. */
+  .glow-text {
+    color: var(--color-gold-bright);
+    text-shadow:
+      0 0 1px rgba(255, 226, 170, 0.6),
+      0 0 12px rgba(201, 138, 58, 0.55),
+      0 0 32px rgba(161, 99, 32, 0.45);
+  }
+  .glow-line {
+    filter: drop-shadow(0 0 3px rgba(201, 138, 58, 0.7)) drop-shadow(0 0 10px rgba(161, 99, 32, 0.45));
+  }
+
+  /* Gold gradient text, for small accents. */
+  .text-gold-gradient {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-gold-deep),
+      var(--color-gold-bright) 45%,
+      #fff0cf 50%,
+      var(--color-gold-bright) 55%,
+      var(--color-gold)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Animated underline drawing from the left. */
+  .link-lux {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-lux);
+    padding-bottom: 2px;
+  }
+  .link-lux:hover,
+  .link-lux:focus-visible,
+  .link-lux[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+
+  /*
+   * Photo grade for the client's phone photos: a very slight contrast lift
+   * and a vignette that melts into the black page. Never shifts hue.
+   */
+  .photo-grade {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--color-night);
+  }
+  .photo-grade img {
+    filter: contrast(1.06) saturate(1.02) brightness(0.97);
+  }
+  .photo-grade::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 85% 80% at var(--focus-x, 50%) var(--focus-y, 50%),
+      transparent 55%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+  }
+
+  .prose-lux {
+    color: color-mix(in oklab, var(--color-ice) 80%, transparent);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .prose-lux h2 {
+    font-size: var(--text-display-sm);
+    line-height: 1.15;
+    color: var(--color-ice);
+    margin: 3rem 0 1rem;
+  }
+  .prose-lux p,
+  .prose-lux ul {
+    margin: 0 0 1.25rem;
+  }
+  .prose-lux ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-lux li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose-lux li::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: 0.7em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border: 1px solid var(--color-gold);
+    transform: rotate(45deg);
+  }
+  .prose-lux a {
+    color: var(--color-gold-bright);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Route transitions (React <ViewTransition>, native View Transitions API)
+------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(.page) {
+  animation: 260ms var(--ease-lux) both vt-fade-out;
+}
+::view-transition-new(.page) {
+  animation:
+    520ms var(--ease-lux) 120ms both vt-fade-in,
+    720ms var(--ease-lux) 120ms both vt-rise;
+}
+
+/* A thin gold line sweeps across the top between pages.
+   The element itself is transparent; only its transition group is painted. */
+::view-transition-group(page-wipe) {
+  background: var(--color-gold);
+  box-shadow: 0 0 12px var(--color-gold);
+  animation: 820ms var(--ease-lux-in-out) both vt-wipe;
+}
+::view-transition-old(page-wipe),
+::view-transition-new(page-wipe) {
+  display: none;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 640ms;
+  animation-timing-function: var(--ease-lux);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-soft-blur;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-rise {
+  from {
+    transform: translateY(18px);
+  }
+}
+@keyframes vt-wipe {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  51% {
+    transform-origin: right;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+@keyframes vt-soft-blur {
+  40% {
+    filter: blur(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 1ms !important;
+  }
+  ::view-transition-new(.page) {
+    animation: 200ms linear both vt-fade-in;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee,
+  .animate-orbit,
+  .animate-breathe {
+    animation: none !important;
+  }
+}
+
+@keyframes orbit-dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* Sparkle glint: plays once each time a photo card is hovered. */
+.glint {
+  position: absolute;
+  z-index: 3;
+  width: 26px;
+  height: 26px;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(255, 240, 207, 0.9));
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .group:hover .glint {
+    animation: glint 0.9s var(--ease-lux) 0.15s 1 both;
+  }
+  .group:hover .glint + .glint {
+    animation-delay: 0.45s;
+  }
+}
+
+/* ---------- First-visit intro ---------- */
+html.intro .intro-overlay {
+  display: flex;
+}
+html.intro body {
+  overflow: hidden;
+}
+.intro-logo {
+  animation: intro-bloom 1.1s var(--ease-lux) both;
+}
+.intro-sweep {
+  transform: translateX(-120%) skewX(-18deg);
+  animation: sweep 0.9s var(--ease-lux) 0.55s 1 both;
+}
+@keyframes intro-bloom {
+  from {
+    opacity: 0;
+    filter: brightness(0.3);
+    transform: scale(0.96);
+  }
+  60% {
+    filter: brightness(1.25);
+  }
+  to {
+    opacity: 1;
+    filter: brightness(1);
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-logo,
+  .intro-sweep {
+    animation: none;
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ---------- Hero entrance (CSS-only, plays before hydration) ---------- */
+.ignite-line {
+  animation: rise-in 1.1s var(--ease-lux) both;
+}
+.ignite-glyph {
+  animation: ignite 0.8s var(--ease-lux) both;
+}
+.hero-fade {
+  animation: hero-fade 1.6s var(--ease-lux) 0.1s both;
+}
+@keyframes rise-in {
+  from {
+    transform: translateY(110%);
+  }
+}
+@keyframes ignite {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+html.intro .ignite-line,
+html.intro .ignite-glyph,
+html.intro .hero-fade {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ignite-line,
+  .ignite-glyph,
+  .hero-fade {
+    animation: none;
+  }
+}
+
+/* Supporting hero lines: transform-led rise so the text paints on first frame (LCP). */
+.hero-rise {
+  animation: hero-rise 1s var(--ease-lux) both;
+}
+@keyframes hero-rise {
+  from {
+    transform: translateY(18px);
+  }
+}
+html.intro .hero-rise {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}
