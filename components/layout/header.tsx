@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
 import { Logo } from '@/components/ui/logo';
 import { logos } from '@/content/brand';
-import { contact, navigation, site } from '@/content/site';
+import { contact, locationLine, navigation, site } from '@/content/site';
 import { cn } from '@/lib/cn';
 import { ease } from '@/lib/motion';
 
@@ -252,7 +252,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                 animate={{ opacity: 1, transition: { delay: 0.8, duration: 0.6 } }}
                 exit={{ opacity: 0, transition: { duration: 0.2 } }}
               >
-                <p>{contact.address.oneLine}</p>
+                <p>{locationLine}</p>
                 <p className="flex flex-wrap gap-x-6 gap-y-2">
                   <a href={contact.phoneHref} className="link-lux">
                     {contact.phone}

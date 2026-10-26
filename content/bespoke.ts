@@ -17,7 +17,7 @@ export const bespoke = {
   faqs: [
     {
       q: 'How do grillz moulds work?',
-      a: 'We take a mould of your teeth in the studio, or post you a kit with simple instructions. Your grillz are built to that mould, then fitted and adjusted so they sit comfortably.',
+      a: 'We take a mould of your teeth in person, or post you a kit with simple instructions. Your grillz are built to that mould, then fitted and adjusted so they sit comfortably.',
     },
     {
       q: 'How long does a custom piece take?',

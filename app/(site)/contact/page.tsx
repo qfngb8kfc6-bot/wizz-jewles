@@ -1,15 +1,14 @@
 import { Reveal } from '@/components/motion/reveal';
 import { ContactForm } from '@/components/sections/contact-form';
-import { LazyMap } from '@/components/sections/lazy-map';
 import { PageHero } from '@/components/sections/page-hero';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
-import { contact, site } from '@/content/site';
+import { contact, locationLine, site, social } from '@/content/site';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Contact',
-  description: `Get in touch with ${site.name}: send a message or book a private consultation.`,
+  description: `Get in touch with ${site.name}: call, email or send a message. Consultations by appointment in Kensington & Bayswater, London, or by video.`,
   path: '/contact',
 });
 
@@ -30,15 +29,9 @@ export default function ContactPage() {
             {contact ? (
               <>
                 <div>
-                  <h2 className="label text-gold-bright">Studio</h2>
-                  <address className="mt-4 text-lg leading-relaxed text-ice/85 not-italic">
-                    {contact.address.street}
-                    <br />
-                    {contact.address.locality}, {contact.address.city}
-                    <br />
-                    {contact.address.postcode}
-                  </address>
-                  <p className="mt-2 text-sm text-smoke">Visits by appointment.</p>
+                  <h2 className="label text-gold-bright">Where</h2>
+                  <p className="mt-4 text-lg leading-relaxed text-ice/85">{locationLine}</p>
+                  <p className="mt-2 text-sm text-smoke">The exact location is confirmed by Wizz before your appointment.</p>
                 </div>
                 <div>
                   <h2 className="label text-gold-bright">Direct</h2>
@@ -53,51 +46,42 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h2 className="label text-gold-bright">Hours</h2>
-                  <dl className="mt-4 divide-y divide-line text-sm">
-                    {contact.hours.map((h) => (
-                      <div key={h.days} className="flex justify-between gap-6 py-2.5">
-                        <dt className="text-ice/80">{h.days}</dt>
-                        <dd className="text-right text-smoke">{h.time}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-                <div>
-                  <h2 className="label text-gold-bright">Follow</h2>
-                  <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                    {contact.social.map((s) => (
-                      <li key={s.name}>
-                        <a
-                          href={s.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="link-lux text-ice/85 hover:text-gold-bright"
-                        >
-                          {s.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-4 text-lg text-ice/85">{contact.hours}</p>
+                  <p className="mt-2 text-sm text-smoke">Available times are shown when you book.</p>
                 </div>
               </>
             ) : (
               <div>
                 <h2 className="label text-gold-bright">Prefer to talk it through?</h2>
                 <p className="mt-4 text-lg leading-relaxed text-ice/80">
-                  Book a private consultation in the studio or on video. Pick a time that suits you and we will confirm by email.
+                  Book a private consultation in person or on video. Pick a time that suits you and we will confirm by email.
                 </p>
               </div>
             )}
+            {social.length ? (
+              <div>
+                <h2 className="label text-gold-bright">Follow</h2>
+                <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                  {social.map((s) => (
+                    <li key={s.name}>
+                      <a
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link-lux text-ice/85 hover:text-gold-bright"
+                      >
+                        {s.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
             <Button href="/book" icon={<ArrowRight />} size="md">
               Book a consultation
             </Button>
           </Reveal>
         </div>
-        {contact ? (
-          <div className="container-lux mt-24">
-            <LazyMap name={site.name} address={contact.address} />
-          </div>
-        ) : null}
       </section>
     </>
   );

@@ -1,7 +1,7 @@
 import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section, Text } from '@react-email/components';
 import type { ReactNode } from 'react';
 import { logos } from '@/content/brand';
-import { contact, site } from '@/content/site';
+import { contact, locationLine, site } from '@/content/site';
 import { siteUrl } from '@/lib/site-url';
 
 export const palette = {
@@ -71,7 +71,7 @@ export function EmailLayout({ preview, children }: { preview: string; children: 
               {contact ? (
                 <>
                   {' '}
-                  · {contact.address.oneLine}
+                  · {locationLine}
                   <br />
                   <Link href={`mailto:${contact.email}`} style={{ color: palette.smoke }}>
                     {contact.email}

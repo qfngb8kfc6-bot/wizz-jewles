@@ -9,7 +9,7 @@ import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Book a Consultation',
-  description: `Book a private consultation with ${site.name}, in the studio or by video: custom grillz, chains, pendants, rings and repairs.`,
+  description: `Book a private consultation with ${site.name}, in person in Kensington & Bayswater or by video: custom grillz, chains, pendants, rings and repairs.`,
   path: '/book',
 });
 
@@ -23,7 +23,7 @@ export default function BookPage({ searchParams }: PageProps<'/book'>) {
           <p className="hero-rise label text-gold-bright">Private consultation</p>
           <RiseText text="Book a consultation" className="mt-6 font-display text-display-lg font-light" />
           <p className="hero-rise mt-6 max-w-xl text-lg leading-relaxed text-ice/75" style={{ animationDelay: '0.3s' }}>
-            In the studio or on video. Four quick steps, and you will get a confirmation and calendar invite straight away.
+            In person or on video. Four quick steps, and you will get a confirmation and calendar invite straight away.
           </p>
         </div>
         <div className="mt-16 max-w-5xl border border-line bg-night/80 p-5 backdrop-blur-sm sm:p-10 lg:p-14">

@@ -1,6 +1,6 @@
 import 'server-only';
 import { getConsultationType, meetingFormats } from '@/config/consultations';
-import { site, studioLocation } from '@/content/site';
+import { inPersonLocation, site } from '@/content/site';
 import { pieces } from '@/content/pieces';
 import BookingConfirmationEmail from '@/emails/booking-confirmation';
 import BookingNotificationEmail from '@/emails/booking-notification';
@@ -60,7 +60,7 @@ export async function sendBookingCreatedEmails(b: Booking, token: string) {
         formatLabel: d.formatLabel,
         when: d.when,
         visitorWhen: d.visitorWhen,
-        location: b.format === 'IN_STUDIO' ? studioLocation : 'Video call — your link will follow by email',
+        location: b.format === 'IN_STUDIO' ? inPersonLocation : 'Video call — your link will follow by email',
         manageUrl: manageUrl(token),
         googleUrl: googleCalendarUrl(event),
       }),

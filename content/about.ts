@@ -38,7 +38,7 @@ export const about = {
       {
         year: 'Now',
         title: 'By appointment',
-        body: 'Private consultations in the studio or by video, for clients near and far.',
+        body: 'Private consultations in person or by video, for clients near and far.',
       },
     ],
   },

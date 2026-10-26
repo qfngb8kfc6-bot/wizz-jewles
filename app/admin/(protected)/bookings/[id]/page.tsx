@@ -41,7 +41,7 @@ async function Detail({ params }: Pick<PageProps<'/admin/bookings/[id]'>, 'param
   const rows: [string, React.ReactNode][] = [
     ['When', `${formatDateTime(b.startsAt)} (${b.durationMinutes} min)`],
     ['Consultation', getConsultationType(b.consultationType)?.name ?? b.consultationType],
-    ['Format', b.format === 'VIDEO' ? 'Video call' : 'In studio'],
+    ['Format', b.format === 'VIDEO' ? 'Video call' : 'In person (Kensington & Bayswater)'],
     [
       'Email',
       <a key="e" href={`mailto:${b.email}`} className="text-gold-bright underline">

@@ -20,6 +20,7 @@ import {
   type MeetingFormatId,
 } from '@/config/consultations';
 import { getPiece } from '@/content/pieces';
+import { inPersonLocation } from '@/content/site';
 import { cn } from '@/lib/cn';
 import { ease, slideStep } from '@/lib/motion';
 import { ACCEPTED_IMAGE_TYPES, detailsStepSchema, validateImageFile, type DetailsStep } from '@/lib/validation/booking';
@@ -96,7 +97,7 @@ export function BookingFlow({ initialType, initialPiece }: BookingFlowProps) {
   const next = async () => {
     if (step === 0) {
       if (!typeId) return fail('Please choose a consultation type.');
-      if (!format) return fail('Please choose in the studio or video call.');
+      if (!format) return fail('Please choose in person or video call.');
       return go(1);
     }
     if (step === 1) {
@@ -382,7 +383,7 @@ export function BookingFlow({ initialType, initialPiece }: BookingFlowProps) {
                       ) : null}
                     </div>
                     <p id="upload-hint" className="mt-2 text-[0.8125rem] text-smoke">
-                      JPG, PNG, WebP or HEIC, up to 8 MB. Stored privately and only seen by the studio.
+                      JPG, PNG, WebP or HEIC, up to 8 MB. Stored privately and only seen by Wizz.
                     </p>
                     <FieldError id="upload-error" message={fileError} />
                   </div>
@@ -417,6 +418,9 @@ export function BookingFlow({ initialType, initialPiece }: BookingFlowProps) {
                     <ReviewRow label="Consultation" onEdit={() => go(0)}>
                       {type.name} · {type.duration} min · {meetingFormats.find((f) => f.id === format)?.name}
                       {piece ? <span className="block text-sm text-smoke">About: {piece.name}</span> : null}
+                    </ReviewRow>
+                    <ReviewRow label="Where" onEdit={() => go(0)}>
+                      {format === 'IN_STUDIO' ? inPersonLocation : 'Video call — we will email you a private link'}
                     </ReviewRow>
                     <ReviewRow label="When" onEdit={() => go(1)}>
                       <span hidden data-testid="review-start" data-start={start} />

@@ -54,7 +54,7 @@ export const home = {
   finalCta: {
     eyebrow: 'Private consultations',
     title: 'Got an idea?\nLet’s make it shine.',
-    body: 'Book a slot in the studio or a video call. No pressure, no obligation. Just straight talk and good stones.',
+    body: 'Book a slot in person or on a video call. No pressure, no obligation. Just straight talk and good stones.',
     cta: { label: 'Book a Consultation', href: '/book' },
   },
 };

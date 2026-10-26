@@ -117,8 +117,7 @@ async function PieceContent({ params }: Pick<PageProps<'/collection/[slug]'>, 'p
                 </div>
                 {consultation ? (
                   <p className="mt-4 text-sm text-smoke">
-                    Opens a {consultation.name.toLowerCase()} consultation ({consultation.duration} min), in the studio or by
-                    video.
+                    Opens a {consultation.name.toLowerCase()} consultation ({consultation.duration} min), in person or by video.
                   </p>
                 ) : null}
               </Reveal>

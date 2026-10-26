@@ -98,7 +98,7 @@ async function BookingList({ searchParams }: Pick<PageProps<'/admin'>, 'searchPa
                     </span>
                     <span className="block truncate text-sm text-smoke">
                       {getConsultationType(b.consultationType)?.name ?? b.consultationType} ·{' '}
-                      {b.format === 'VIDEO' ? 'Video' : 'In studio'}
+                      {b.format === 'VIDEO' ? 'Video' : 'In person'}
                     </span>
                   </span>
                   <StatusBadge status={b.status} />
@@ -136,7 +136,7 @@ async function BookingList({ searchParams }: Pick<PageProps<'/admin'>, 'searchPa
                       <span className="block text-ice">
                         {getConsultationType(b.consultationType)?.name ?? b.consultationType}
                       </span>
-                      <span className="text-smoke">{b.format === 'VIDEO' ? 'Video' : 'In studio'}</span>
+                      <span className="text-smoke">{b.format === 'VIDEO' ? 'Video' : 'In person'}</span>
                     </td>
                     <td className="py-4 pr-4">
                       <StatusBadge status={b.status} />
