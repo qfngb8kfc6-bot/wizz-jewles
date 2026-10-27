@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { ogImage } from '@/content/brand';
-import { site } from '@/content/site';
+import { contact, site, social } from '@/content/site';
 import { siteUrl } from '@/lib/site-url';
 
 /** Per-page metadata with canonical URL and shared social image. */
@@ -31,17 +31,21 @@ export function jewelryStoreJsonLd() {
     url: siteUrl(),
     logo: siteUrl('/brand/logo/wizz-logo-square.png'),
     image: siteUrl('/brand/og/og-default.png'),
-    email: site.email,
-    telephone: site.phone,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: site.address.street,
-      addressLocality: site.address.city,
-      postalCode: site.address.postcode,
-      addressCountry: site.address.country,
-    },
-    geo: { '@type': 'GeoCoordinates', latitude: site.address.geo.lat, longitude: site.address.geo.lng },
-    sameAs: site.social.map((s) => s.href),
+    // Contact details are only published once the client has confirmed them. Wizz works by
+    // appointment only, so there is deliberately no street address, postcode or geo.
+    ...(contact
+      ? {
+          telephone: contact.phoneInternational,
+          email: contact.email,
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: contact.address.locality,
+            addressRegion: contact.address.region,
+            addressCountry: contact.address.country,
+          },
+        }
+      : {}),
+    ...(social.length ? { sameAs: social.map((s) => s.href) } : {}),
   };
 }
 

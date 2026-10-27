@@ -67,14 +67,14 @@ async function BookingList({ searchParams }: Pick<PageProps<'/admin'>, 'searchPa
 
   return (
     <>
-      <nav aria-label="Filter bookings" className="mt-10 flex gap-2 border-b border-line">
+      <nav aria-label="Filter bookings" className="mt-10 no-scrollbar flex gap-1 overflow-x-auto border-b border-line sm:gap-2">
         {(Object.keys(views) as View[]).map((v, i) => (
           <Link
             key={v}
             href={v === 'upcoming' ? '/admin' : `/admin?view=${v}`}
             aria-current={v === view ? 'page' : undefined}
             className={cn(
-              'label -mb-px border-b px-4 py-3 transition-colors',
+              'label -mb-px border-b px-3 py-3 whitespace-nowrap transition-colors sm:px-4',
               v === view ? 'border-gold-bright text-gold-bright' : 'border-transparent text-smoke hover:text-ice',
             )}
           >
@@ -85,49 +85,73 @@ async function BookingList({ searchParams }: Pick<PageProps<'/admin'>, 'searchPa
       {bookings.length === 0 ? (
         <p className="mt-12 text-ice/60">No {views[view].toLowerCase()} bookings.</p>
       ) : (
-        <div className="mt-6 overflow-x-auto">
-          <table className="w-full min-w-[46rem] text-left text-sm">
-            <thead>
-              <tr className="label text-[10px] text-smoke">
-                <th className="py-3 pr-4 font-semibold">When</th>
-                <th className="py-3 pr-4 font-semibold">Client</th>
-                <th className="py-3 pr-4 font-semibold">Consultation</th>
-                <th className="py-3 pr-4 font-semibold">Status</th>
-                <th className="py-3 font-semibold">
-                  <span className="sr-only">Open</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {bookings.map((b) => (
-                <tr key={b.id} className="transition-colors hover:bg-night-2">
-                  <td className="py-4 pr-4">
-                    <span className="block text-ice">{formatDateLong(b.startsAt)}</span>
-                    <span className="text-smoke tabular-nums">
-                      {formatTime(b.startsAt)} · {b.durationMinutes} min
-                    </span>
-                  </td>
-                  <td className="py-4 pr-4">
+        <>
+          {/* Phones: one card per booking. */}
+          <ul className="mt-6 divide-y divide-line border-y border-line md:hidden">
+            {bookings.map((b) => (
+              <li key={b.id}>
+                <Link href={`/admin/bookings/${b.id}`} className="flex items-start justify-between gap-4 py-4">
+                  <span className="min-w-0">
                     <span className="block text-ice">{b.name}</span>
-                    <span className="text-smoke">{b.email}</span>
-                  </td>
-                  <td className="py-4 pr-4">
-                    <span className="block text-ice">{getConsultationType(b.consultationType)?.name ?? b.consultationType}</span>
-                    <span className="text-smoke">{b.format === 'VIDEO' ? 'Video' : 'In studio'}</span>
-                  </td>
-                  <td className="py-4 pr-4">
-                    <StatusBadge status={b.status} />
-                  </td>
-                  <td className="py-4 text-right">
-                    <Link href={`/admin/bookings/${b.id}`} className="label link-lux text-gold-bright">
-                      View<span className="sr-only"> booking for {b.name}</span>
-                    </Link>
-                  </td>
+                    <span className="block text-sm text-smoke tabular-nums">
+                      {formatDateLong(b.startsAt)} · {formatTime(b.startsAt)}
+                    </span>
+                    <span className="block truncate text-sm text-smoke">
+                      {getConsultationType(b.consultationType)?.name ?? b.consultationType} ·{' '}
+                      {b.format === 'VIDEO' ? 'Video' : 'In person'}
+                    </span>
+                  </span>
+                  <StatusBadge status={b.status} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 hidden overflow-x-auto md:block">
+            <table className="w-full min-w-[46rem] text-left text-sm">
+              <thead>
+                <tr className="label text-[10px] text-smoke">
+                  <th className="py-3 pr-4 font-semibold">When</th>
+                  <th className="py-3 pr-4 font-semibold">Client</th>
+                  <th className="py-3 pr-4 font-semibold">Consultation</th>
+                  <th className="py-3 pr-4 font-semibold">Status</th>
+                  <th className="py-3 font-semibold">
+                    <span className="sr-only">Open</span>
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {bookings.map((b) => (
+                  <tr key={b.id} className="transition-colors hover:bg-night-2">
+                    <td className="py-4 pr-4">
+                      <span className="block text-ice">{formatDateLong(b.startsAt)}</span>
+                      <span className="text-smoke tabular-nums">
+                        {formatTime(b.startsAt)} · {b.durationMinutes} min
+                      </span>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <span className="block text-ice">{b.name}</span>
+                      <span className="text-smoke">{b.email}</span>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <span className="block text-ice">
+                        {getConsultationType(b.consultationType)?.name ?? b.consultationType}
+                      </span>
+                      <span className="text-smoke">{b.format === 'VIDEO' ? 'Video' : 'In person'}</span>
+                    </td>
+                    <td className="py-4 pr-4">
+                      <StatusBadge status={b.status} />
+                    </td>
+                    <td className="py-4 text-right">
+                      <Link href={`/admin/bookings/${b.id}`} className="label link-lux text-gold-bright">
+                        View<span className="sr-only"> booking for {b.name}</span>
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </>
   );

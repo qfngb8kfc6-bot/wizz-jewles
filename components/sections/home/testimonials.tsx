@@ -4,7 +4,9 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from '@/components/ui/icons';
 import { Sparkle } from '@/components/visual/ornaments';
-import { testimonials } from '@/content/testimonials';
+import { testimonials as testimonialContent } from '@/content/testimonials';
+
+const testimonials = testimonialContent.items;
 import { cn } from '@/lib/cn';
 import { ease } from '@/lib/motion';
 

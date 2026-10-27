@@ -31,7 +31,7 @@ export default function CollectionPage() {
       <div className="space-y-32 py-28 sm:space-y-44 sm:py-36">
         {pieces.map((piece, i) => {
           const flip = i % 2 === 1;
-          const [hero, detail] = piece.images;
+          const [hero] = piece.images;
           return (
             <article key={piece.slug} aria-labelledby={`piece-${piece.slug}`} className="container-lux">
               <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
@@ -64,9 +64,6 @@ export default function CollectionPage() {
                   <Reveal delay={0.15}>
                     <p className="mt-4 text-smoke">{piece.material}</p>
                     <p className="mt-6 text-lg leading-relaxed text-ice/80">{piece.summary}</p>
-                    <div className="mt-8 hidden w-44 bg-night p-2 sm:block">
-                      <Photo image={detail} ratio="4 / 5" zoom={1.25} sizes="176px" />
-                    </div>
                     <div className="mt-10 flex flex-wrap gap-4">
                       <Button href={`/collection/${piece.slug}`} icon={<ArrowRight />} size="md">
                         View piece

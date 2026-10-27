@@ -44,7 +44,11 @@ export function getConsultationType(id: string) {
 }
 
 export const meetingFormats = [
-  { id: 'IN_STUDIO', name: 'In the studio', summary: 'Come to the studio and see the pieces in person.' },
+  {
+    id: 'IN_STUDIO',
+    name: 'In person (Kensington & Bayswater)',
+    summary: 'Meet Wizz in person and see the work up close. The exact location is confirmed before your appointment.',
+  },
   { id: 'VIDEO', name: 'Video call', summary: 'A private video consultation. We will email a secure link.' },
 ] as const;
 

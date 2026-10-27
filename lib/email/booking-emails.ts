@@ -1,6 +1,6 @@
 import 'server-only';
 import { getConsultationType, meetingFormats } from '@/config/consultations';
-import { site } from '@/content/site';
+import { inPersonLocation, site } from '@/content/site';
 import { pieces } from '@/content/pieces';
 import BookingConfirmationEmail from '@/emails/booking-confirmation';
 import BookingNotificationEmail from '@/emails/booking-notification';
@@ -9,7 +9,7 @@ import { bookingCalendarEvent, buildIcs, googleCalendarUrl } from '@/lib/calenda
 import { formatDateTime, timeZoneLabel } from '@/lib/format';
 import type { Booking } from '@/lib/generated/prisma/client';
 import { siteUrl } from '@/lib/site-url';
-import { sendEmail, studioInbox } from './send';
+import { replyToStudio, sendEmail, studioInbox } from './send';
 
 export const manageUrl = (token: string) => siteUrl(`/booking/${token}`);
 
@@ -52,7 +52,7 @@ export async function sendBookingCreatedEmails(b: Booking, token: string) {
     sendEmail({
       to: b.email,
       subject: `Your consultation with ${site.name} is confirmed`,
-      replyTo: site.email,
+      replyTo: replyToStudio(),
       react: BookingConfirmationEmail({
         name: b.name,
         reference: b.reference,
@@ -60,7 +60,7 @@ export async function sendBookingCreatedEmails(b: Booking, token: string) {
         formatLabel: d.formatLabel,
         when: d.when,
         visitorWhen: d.visitorWhen,
-        location: b.format === 'IN_STUDIO' ? site.address.oneLine : 'Video call — your link will follow by email',
+        location: b.format === 'IN_STUDIO' ? inPersonLocation : 'Video call — your link will follow by email',
         manageUrl: manageUrl(token),
         googleUrl: googleCalendarUrl(event),
       }),
@@ -107,7 +107,7 @@ export async function sendBookingChangedEmails(b: Booking, kind: 'rescheduled' |
     sendEmail({
       to: b.email,
       subject: kind === 'rescheduled' ? 'Your consultation has been rescheduled' : 'Your consultation has been cancelled',
-      replyTo: site.email,
+      replyTo: replyToStudio(),
       react: BookingUpdateEmail({ ...common, audience: 'customer' }),
       attachments: [attachment],
     }),

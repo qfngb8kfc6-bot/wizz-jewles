@@ -4,7 +4,7 @@ export const processSteps = [
     number: '01',
     title: 'Consult',
     short: 'Talk it through. Sketch it out. Set the budget.',
-    body: 'In the studio or on video, we go through what you want, how you will wear it and what you want to spend. For grillz we talk fit and arrange your mould.',
+    body: 'In person or on video, we go through what you want, how you will wear it and what you want to spend. For grillz we talk fit and arrange your mould.',
     duration: 'Day one',
   },
   {
@@ -25,7 +25,7 @@ export const processSteps = [
     number: '04',
     title: 'Shine',
     short: 'Collect it, wear it, and we look after it.',
-    body: 'Collect in the studio or by insured delivery. Bring it back any time for a clean and a check.',
+    body: 'Collect in person or by insured delivery. Bring it back any time for a clean and a check.',
     duration: 'Collection',
   },
 ] as const;

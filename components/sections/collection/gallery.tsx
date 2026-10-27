@@ -37,7 +37,14 @@ export function Gallery({ images, name, morphName }: GalleryProps) {
           <Photo
             key={current.src}
             image={current}
-            ratio={current.aspect === 'portrait' ? '4 / 5' : current.aspect === 'square' ? '1 / 1' : '3 / 2'}
+            // Portrait shots are shown whole at their native 3:4, never cropped tighter.
+            ratio={
+              current.aspect === 'portrait'
+                ? `${current.width} / ${current.height}`
+                : current.aspect === 'square'
+                  ? '1 / 1'
+                  : '3 / 2'
+            }
             sizes="(min-width: 1024px) 58vw, 94vw"
             priority
             glints

@@ -1,4 +1,7 @@
-import { site } from './site';
+import { contact, site } from './site';
+
+/** How to reach us: the published email, otherwise the contact form. */
+const emailUs = contact ? `by email at ${contact.email}` : 'through the contact form on this website';
 
 export interface LegalSection {
   heading: string;
@@ -20,12 +23,12 @@ export interface LegalDoc {
 export const privacy: LegalDoc = {
   title: 'Privacy Policy',
   description: 'How Wizz Jewels collects, uses and protects your personal information.',
-  updated: '22 October 2026',
+  updated: '26 October 2026',
   sections: [
     {
       heading: 'Who we are',
       paragraphs: [
-        `${site.legalName} ("we", "us") is the controller of the personal data described in this policy. You can reach us at ${site.email} or by post at ${site.address.oneLine}.`,
+        `${site.legalName} ("we", "us") is the controller of the personal data described in this policy. You can reach us ${emailUs}.`,
       ],
     },
     {
@@ -64,7 +67,7 @@ export const privacy: LegalDoc = {
     {
       heading: 'Your rights',
       paragraphs: [
-        `You may ask to access, correct, delete or export your data, or object to how we use it, by emailing ${site.email}. You also have the right to complain to the Information Commissioner’s Office (ico.org.uk).`,
+        `You may ask to access, correct, delete or export your data, or object to how we use it, by contacting us ${emailUs}. You also have the right to complain to the Information Commissioner’s Office (ico.org.uk).`,
       ],
     },
   ],
@@ -73,7 +76,7 @@ export const privacy: LegalDoc = {
 export const terms: LegalDoc = {
   title: 'Terms of Use',
   description: 'The terms that apply when you use the Wizz Jewels website and book a consultation.',
-  updated: '22 October 2026',
+  updated: '26 October 2026',
   sections: [
     {
       heading: 'About these terms',
@@ -111,13 +114,17 @@ export const terms: LegalDoc = {
       heading: 'Law',
       paragraphs: ['These terms are governed by the laws of England and Wales.'],
     },
+    {
+      heading: 'Contact',
+      paragraphs: [`Questions about these terms? Contact us ${emailUs}.`],
+    },
   ],
 };
 
 export const cookies: LegalDoc = {
   title: 'Cookie Notice',
   description: 'The small number of cookies and similar technologies used by this website.',
-  updated: '22 October 2026',
+  updated: '26 October 2026',
   sections: [
     {
       heading: 'Our approach',
@@ -128,14 +135,13 @@ export const cookies: LegalDoc = {
       list: [
         'wj_consent (local storage): remembers your choice on our cookie banner. 12 months.',
         'wj_intro_seen (session storage): stops the opening logo animation replaying during your visit. Cleared when you close the tab.',
-        'wj_admin: keeps studio staff signed in to the private dashboard. Only set for staff. 12 hours.',
+        'wj_admin: keeps Wizz Jewels staff signed in to the private dashboard. Only set for staff. 12 hours.',
       ],
     },
     {
       heading: 'Optional',
       paragraphs: [
         'If we add privacy-friendly analytics in future, it will only run after you choose “Accept” on the banner, and we will list it here.',
-        'Embedded maps on our Contact page are only loaded when that section comes into view; the map provider may set its own cookies.',
       ],
     },
     {
@@ -143,6 +149,10 @@ export const cookies: LegalDoc = {
       paragraphs: [
         'You can reset your choice at any time with the “Cookie settings” link in the footer, or by clearing site data in your browser.',
       ],
+    },
+    {
+      heading: 'Questions',
+      paragraphs: [`If you have any questions about cookies on this site, contact us ${emailUs}.`],
     },
   ],
 };

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Reveal } from '@/components/motion/reveal';
 import { Instagram, Pinterest, TikTok } from '@/components/ui/icons';
 import { Logo } from '@/components/ui/logo';
-import { legalLinks, navigation, site } from '@/content/site';
+import { contact, legalLinks, navigation, site, social } from '@/content/site';
 import { CookieSettingsLink } from './cookie-banner';
 import { CurrentYear } from './current-year';
 import { NewsletterForm } from './newsletter-form';
@@ -24,7 +24,7 @@ export function Footer() {
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-6 lg:col-start-7">
+          <div className={`grid grid-cols-2 gap-10 lg:col-span-6 lg:col-start-7 ${social.length ? 'sm:grid-cols-3' : ''}`}>
             <div>
               <h2 className="label text-ice/60">Explore</h2>
               <ul className="mt-6 space-y-3">
@@ -37,49 +37,65 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-            <div className="max-sm:order-3 max-sm:col-span-2">
-              <h2 className="label text-ice/60">Visit</h2>
-              <address className="mt-6 space-y-3 text-sm text-ice/85 not-italic">
-                <p>
-                  {site.address.street}
-                  <br />
-                  {site.address.locality}
-                  <br />
-                  {site.address.city} {site.address.postcode}
-                </p>
-                <p>
-                  <a href={site.phoneHref} className="link-lux">
-                    {site.phone}
-                  </a>
-                </p>
-                <p>
-                  <a href={`mailto:${site.email}`} className="link-lux">
-                    {site.email}
-                  </a>
-                </p>
-              </address>
+            {/* Full width on phones so the email address never wraps mid-word. */}
+            <div className={social.length ? 'max-sm:order-3 max-sm:col-span-2' : 'max-sm:col-span-2'}>
+              <h2 className="label text-ice/60">Get in touch</h2>
+              {contact ? (
+                <address className="mt-6 space-y-3 text-sm text-ice/85 not-italic">
+                  <p>
+                    {contact.address.area}, {contact.address.city}
+                    <br />
+                    <span className="text-ice/60">By appointment only</span>
+                  </p>
+                  <p>
+                    <a href={contact.phoneHref} className="link-lux">
+                      {contact.phone}
+                    </a>
+                  </p>
+                  <p>
+                    <a href={`mailto:${contact.email}`} className="link-lux">
+                      {contact.email}
+                    </a>
+                  </p>
+                  <p>
+                    <Link href="/contact" className="link-lux hover:text-ice">
+                      Send a message
+                    </Link>
+                  </p>
+                </address>
+              ) : (
+                <ul className="mt-6 space-y-3">
+                  <li>
+                    <Link href="/contact" className="link-lux text-sm text-ice/85 hover:text-ice">
+                      Send a message
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </div>
-            <div>
-              <h2 className="label text-ice/60">Follow</h2>
-              <ul className="mt-6 flex gap-2">
-                {site.social.map((s) => {
-                  const Icon = socialIcon[s.name as keyof typeof socialIcon];
-                  return (
-                    <li key={s.name}>
-                      <a
-                        href={s.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${site.name} on ${s.name} (opens in a new tab)`}
-                        className="flex size-11 items-center justify-center rounded-full border border-ice/20 text-ice/80 transition-all duration-500 ease-lux hover:-translate-y-0.5 hover:border-gold hover:text-gold"
-                      >
-                        <Icon className="size-[18px]" />
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+            {social.length ? (
+              <div>
+                <h2 className="label text-ice/60">Follow</h2>
+                <ul className="mt-6 flex gap-2">
+                  {social.map((s) => {
+                    const Icon = socialIcon[s.name];
+                    return (
+                      <li key={s.name}>
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${site.name} on ${s.name} (opens in a new tab)`}
+                          className="flex size-11 items-center justify-center rounded-full border border-ice/20 text-ice/80 transition-all duration-500 ease-lux hover:-translate-y-0.5 hover:border-gold hover:text-gold"
+                        >
+                          <Icon className="size-[18px]" />
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : null}
           </div>
         </div>
 

@@ -246,8 +246,7 @@ export function SlotPicker({
           ) : null}
         </div>
         <p className="mt-6 text-sm text-smoke">
-          Times are shown in studio time (London){showLocal ? ', with your local time alongside' : ''}. Bookings open from
-          tomorrow.
+          Times are shown in London time{showLocal ? ', with your local time alongside' : ''}. Bookings open from tomorrow.
         </p>
       </div>
 

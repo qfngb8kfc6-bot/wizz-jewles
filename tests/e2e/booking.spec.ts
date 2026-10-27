@@ -1,4 +1,4 @@
-import { expect, fillBookingToReview, test } from './fixtures';
+import { expect, fillBookingToReview, pickFirstAvailableDay, test } from './fixtures';
 
 test.describe('booking', () => {
   test('happy path: book a consultation end to end', async ({ page }) => {
@@ -56,12 +56,9 @@ test.describe('booking', () => {
     await expect(page.getByRole('alert').filter({ hasText: 'Please choose a consultation type.' })).toBeVisible();
 
     await page.getByText('General Enquiry', { exact: true }).click();
-    await page.getByText('In the studio', { exact: true }).click();
+    await page.getByText('In person (Kensington & Bayswater)', { exact: true }).click();
     await page.getByRole('button', { name: 'Continue' }).click();
-    await page
-      .getByRole('button', { name: /, available$/ })
-      .first()
-      .click();
+    await pickFirstAvailableDay(page);
     await page.locator('[role="radio"]:not([disabled])').first().click();
     await page.getByRole('button', { name: 'Continue' }).click();
 

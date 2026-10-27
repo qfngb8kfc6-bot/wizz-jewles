@@ -15,7 +15,7 @@ interface CtaBandProps {
 /** Closing booking prompt: the CTA sits inside a slowly orbiting gold ring. */
 export function CtaBand({ eyebrow, title, body, cta }: CtaBandProps) {
   return (
-    <section aria-labelledby="cta-title" className="relative isolate overflow-hidden bg-void py-32 sm:py-44">
+    <section aria-labelledby="cta-title" className="relative isolate overflow-hidden bg-void py-24 sm:py-44">
       <Starfield density={0.5} />
       <div
         aria-hidden="true"

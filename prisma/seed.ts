@@ -36,15 +36,31 @@ async function main() {
   const samples = [
     {
       name: 'Jordan Ellis',
-      email: 'jordan@example.com',
+      email: 'jordan.sample@wizzjewels.invalid',
       type: 'grillz',
       format: 'IN_STUDIO',
       time: '11:00',
       day: 2,
       duration: 60,
     },
-    { name: 'Sam Okafor', email: 'sam@example.com', type: 'chains', format: 'VIDEO', time: '14:30', day: 5, duration: 45 },
-    { name: 'Alex Rivera', email: 'alex@example.com', type: 'rings', format: 'IN_STUDIO', time: '16:00', day: 9, duration: 60 },
+    {
+      name: 'Sam Okafor',
+      email: 'sam.sample@wizzjewels.invalid',
+      type: 'chains',
+      format: 'VIDEO',
+      time: '14:30',
+      day: 5,
+      duration: 45,
+    },
+    {
+      name: 'Alex Rivera',
+      email: 'alex.sample@wizzjewels.invalid',
+      type: 'rings',
+      format: 'IN_STUDIO',
+      time: '16:00',
+      day: 9,
+      duration: 60,
+    },
   ] as const;
 
   for (const s of samples) {

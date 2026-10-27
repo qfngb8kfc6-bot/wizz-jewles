@@ -1,39 +1,93 @@
 /**
- * TODO: client — every contact detail below is a placeholder.
  * Business details used across the site, emails, calendar invites and
- * structured data. Replace the placeholders with the studio's real details.
+ * structured data.
  */
 export const site = {
   name: 'Wizz Jewels',
-  legalName: 'Wizz Jewels Ltd',
+  legalName: 'Wizz Jewels',
   tagline: 'Custom grillz, chains and fine jewellery, handcrafted by Wizz.',
   description:
-    'Wizz Jewels makes custom grillz, diamond chains, pendants and statement rings by hand. Book a private consultation in the studio or by video.',
-  email: 'hello@wizzjewels.co.uk', // PLACEHOLDER
-  phone: '+44 20 7946 0321', // PLACEHOLDER (Ofcom drama range)
-  phoneHref: 'tel:+442079460321',
+    'Wizz Jewels makes custom grillz, diamond chains, pendants and statement rings by hand. Book a private consultation in person in Kensington & Bayswater, London, or by video.',
+} as const;
+
+export interface ContactDetails {
+  /**
+   * Hidden everywhere (footer, contact page, mobile menu, emails, calendar
+   * invites, structured data) unless true. Only publish real details.
+   */
+  published: boolean;
+  email: string;
+  /** As displayed, e.g. "07404 311797". */
+  phone: string;
+  /** International format for structured data, e.g. "+44 7404 311797". */
+  phoneInternational: string;
+  phoneHref: string;
+  /**
+   * Wizz works by appointment only, so there is no public street address,
+   * postcode or map. Add `street`/`postcode`/`geo` only if that changes.
+   */
   address: {
-    street: '27 Greville Street', // PLACEHOLDER
-    locality: 'Hatton Garden',
+    area: string;
+    city: string;
+    /** Locality/region for structured data. */
+    locality: string;
+    region: string;
+    country: string;
+    street?: string;
+    postcode?: string;
+    geo?: { lat: number; lng: number };
+  };
+  /** Shown instead of opening hours. Bookable times come from config/availability.ts. */
+  hours: string;
+}
+
+const contactDetails: ContactDetails = {
+  published: true,
+  email: 'wizzjewelstm@gmail.com',
+  phone: '07404 311797',
+  phoneInternational: '+44 7404 311797',
+  phoneHref: 'tel:+447404311797',
+  address: {
+    area: 'Kensington & Bayswater',
     city: 'London',
-    postcode: 'EC1N 8SU',
+    locality: 'Kensington',
+    region: 'London',
     country: 'GB',
-    oneLine: '27 Greville Street, Hatton Garden, London EC1N 8SU',
-    geo: { lat: 51.5205, lng: -0.1085 },
   },
-  hours: [
-    { days: 'Tuesday – Wednesday', time: '10:00 – 18:00' },
-    { days: 'Thursday', time: '10:00 – 19:00' },
-    { days: 'Friday', time: '10:00 – 18:00' },
-    { days: 'Saturday', time: '10:00 – 16:00' },
-    { days: 'Sunday – Monday', time: 'Closed' },
-  ],
-  social: [
+  hours: 'By appointment',
+};
+
+/** The studio's contact details, or null while they are unpublished. */
+export const contact: ContactDetails | null = contactDetails.published ? contactDetails : null;
+
+/** "Kensington & Bayswater, London · By appointment only" */
+export const locationLine = contact ? `${contact.address.area}, ${contact.address.city} · By appointment only` : null;
+
+/**
+ * Where an in-person consultation happens, as shown on the review screen, in
+ * confirmation emails and in calendar invites.
+ */
+export const inPersonLocation = 'Kensington & Bayswater, London — exact location confirmed by Wizz before your appointment';
+
+export interface SocialLink {
+  name: 'Instagram' | 'Pinterest' | 'TikTok';
+  href: string;
+}
+
+/**
+ * TODO: client — add the real handles, then set `published: true`.
+ * Social links stay hidden everywhere (footer, contact page, JSON-LD) until then.
+ */
+const socialLinks: { published: boolean; items: SocialLink[] } = {
+  published: false,
+  items: [
     { name: 'Instagram', href: 'https://www.instagram.com/' },
-    { name: 'Pinterest', href: 'https://www.pinterest.com/' },
     { name: 'TikTok', href: 'https://www.tiktok.com/' },
   ],
-} as const;
+};
+
+/** Published social links, or an empty list while they are hidden. */
+export const social: SocialLink[] = socialLinks.published ? socialLinks.items : [];
 
 export const navigation = [
   { href: '/collection', label: 'Collection' },

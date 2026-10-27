@@ -1,7 +1,7 @@
 import { Body, Container, Head, Hr, Html, Img, Link, Preview, Section, Text } from '@react-email/components';
 import type { ReactNode } from 'react';
 import { logos } from '@/content/brand';
-import { site } from '@/content/site';
+import { contact, locationLine, site } from '@/content/site';
 import { siteUrl } from '@/lib/site-url';
 
 export const palette = {
@@ -67,12 +67,26 @@ export function EmailLayout({ preview, children }: { preview: string; children: 
           <Section style={{ padding: '40px' }}>{children}</Section>
           <Section style={{ padding: '24px 40px 36px', borderTop: `1px solid ${palette.line}` }}>
             <Text style={{ ...styles.p, fontSize: '12px', lineHeight: '19px', color: palette.smoke, margin: 0 }}>
-              {site.name} · {site.address.oneLine}
-              <br />
-              <Link href={`mailto:${site.email}`} style={{ color: palette.smoke }}>
-                {site.email}
-              </Link>{' '}
-              · {site.phone}
+              {site.name}
+              {contact ? (
+                <>
+                  {' '}
+                  · {locationLine}
+                  <br />
+                  <Link href={`mailto:${contact.email}`} style={{ color: palette.smoke }}>
+                    {contact.email}
+                  </Link>{' '}
+                  · {contact.phone}
+                </>
+              ) : (
+                <>
+                  {' '}
+                  ·{' '}
+                  <Link href={siteUrl('/contact')} style={{ color: palette.smoke }}>
+                    Get in touch
+                  </Link>
+                </>
+              )}
             </Text>
           </Section>
         </Container>

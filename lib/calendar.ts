@@ -1,5 +1,5 @@
 import { siteUrl } from '@/lib/site-url';
-import { site } from '@/content/site';
+import { contact, inPersonLocation, site } from '@/content/site';
 
 export interface CalendarEvent {
   uid: string;
@@ -25,16 +25,29 @@ function esc(text: string) {
   return text.replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 }
 
-/** Lines longer than 75 octets must be folded. */
+/**
+ * Lines longer than 75 octets must be folded (RFC 5545 §3.1). Counted in
+ * UTF-8 bytes, never splitting a multi-byte character such as "—".
+ */
 function fold(line: string) {
+  const encoder = new TextEncoder();
   const out: string[] = [];
-  let rest = line;
-  while (rest.length > 74) {
-    out.push(rest.slice(0, 74));
-    rest = ` ${rest.slice(74)}`;
+  let current = '';
+  let bytes = 0;
+  for (const ch of line) {
+    const size = encoder.encode(ch).length;
+    // Continuation lines start with a space, which counts towards their 75 octets.
+    const limit = out.length === 0 ? 75 : 74;
+    if (bytes + size > limit) {
+      out.push(current);
+      current = '';
+      bytes = 0;
+    }
+    current += ch;
+    bytes += size;
   }
-  out.push(rest);
-  return out.join('\r\n');
+  out.push(current);
+  return out.map((l, i) => (i === 0 ? l : ` ${l}`)).join('\r\n');
 }
 
 export function buildIcs(event: CalendarEvent): string {
@@ -54,7 +67,7 @@ export function buildIcs(event: CalendarEvent): string {
     `DESCRIPTION:${esc(event.description)}`,
     `LOCATION:${esc(event.location)}`,
     ...(event.url ? [`URL:${event.url}`] : []),
-    `ORGANIZER;CN=${esc(site.name)}:mailto:${site.email}`,
+    ...(contact ? [`ORGANIZER;CN=${esc(site.name)}:mailto:${contact.email}`] : []),
     `SEQUENCE:${event.sequence ?? 0}`,
     `STATUS:${method === 'CANCEL' ? 'CANCELLED' : 'CONFIRMED'}`,
     'BEGIN:VALARM',
@@ -93,13 +106,13 @@ export function bookingCalendarEvent(b: {
     title: `${b.consultationName} — ${site.name}`,
     description: [
       `Your ${b.consultationName.toLowerCase()} consultation with ${site.name}.`,
-      inStudio ? `Studio: ${site.address.oneLine}` : 'Video call: we will email your private link the day before.',
+      inStudio ? `Location: ${inPersonLocation}` : 'Video call: we will email your private link the day before.',
       `Reference: ${b.reference}`,
       b.manageUrl ? `Reschedule or cancel: ${b.manageUrl}` : '',
     ]
       .filter(Boolean)
       .join('\n'),
-    location: inStudio ? site.address.oneLine : 'Video call',
+    location: inStudio ? inPersonLocation : 'Video call',
     start: b.startsAt,
     end: b.endsAt,
     url: b.manageUrl ?? siteUrl('/book'),

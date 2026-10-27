@@ -60,11 +60,27 @@ Everything a client might want to change lives in **`content/`** and **`config/`
 
 | File                                                                                                      | Contents                                                                                                                                                                          |
 | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `content/site.ts`                                                                                         | Business name, address, phone, email, opening hours, social links, navigation                                                                                                     |
+| `content/site.ts`                                                                                         | Business name, navigation, contact details (email, phone, area, "By appointment") and social links, each behind its own `published` flag                                          |
 | `content/pieces.ts`                                                                                       | The collection (name, category, materials, description, specs, images, matching consultation type). Specs left empty and listed under `toConfirm` until the client confirms them. |
 | `content/images.ts`                                                                                       | Every jewellery photo, with dimensions and a **focal point** used for cropping                                                                                                    |
 | `content/brand.ts`                                                                                        | Logo files                                                                                                                                                                        |
 | `content/home.ts`, `about.ts`, `bespoke.ts`, `process.ts`, `collection.ts`, `testimonials.ts`, `legal.ts` | Page copy                                                                                                                                                                         |
+
+### Placeholder content and the `published` flags
+
+Nothing invented renders on the site. Blocks that still need the client's real content are switched off with a `published: false` flag in `content/`; each one reappears everywhere it is used as soon as the real content is added and the flag is set to `true`:
+
+| Flag                                    | File                      | What it controls while `false`                                                                                                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `contactDetails.published` (now `true`) | `content/site.ts`         | Email, phone and area ("Kensington & Bayswater, London · By appointment only") in the footer, mobile menu, contact page, legal pages, emails, calendar invites and JSON-LD. There is deliberately no street address, postcode or map: Wizz works by appointment only. If set to `false`, everything falls back to the contact form. |
+| `socialLinks.published`                 | `content/site.ts`         | Social links in the footer, contact page and JSON-LD `sameAs`. Add the real handles first.                                                                                                                                                                                                                                          |
+| `testimonials.published`                | `content/testimonials.ts` | The testimonials section on the home page                                                                                                                                                                                                                                                                                           |
+| `craft.stats.published`                 | `content/home.ts`         | The animated stats counters on the home page                                                                                                                                                                                                                                                                                        |
+| `timeline.published`                    | `content/about.ts`        | The "story so far" timeline on the About page                                                                                                                                                                                                                                                                                       |
+
+The E2E suite (`tests/e2e/contact-details.spec.ts`) fails if any placeholder text, old placeholder address, or hidden social link renders, and checks the real contact details and the in-person location in bookings and calendar invites. Booking and contact notifications go to `STUDIO_NOTIFICATION_EMAIL` if set, otherwise to the published contact email.
+
+In-person consultations are described everywhere (review screen, emails, `.ics` and Google Calendar) as `inPersonLocation` in `content/site.ts`: "Kensington & Bayswater, London — exact location confirmed by Wizz before your appointment".
 
 ### Photos
 
@@ -75,6 +91,8 @@ Only the client's real work is shown, from `public/work/`. To add or replace a p
 3. Reference it from a piece in `content/pieces.ts`.
 
 All photos get the same subtle grade via the `.photo-grade` class (a slight contrast lift and a vignette into the black page); no filter changes metal or stone colours.
+
+**Never crop beyond native resolution.** Crops come only from `object-fit: cover` inside a frame; photos are never scaled up to fake a tighter crop. `<Photo>` requests enough pixels for the visible crop automatically (`lib/photo-sizes.ts`), and `tests/unit/photo-sizes.test.ts` lists every crop on the site and checks it stays sharp at 2× device pixels. Add a row there when you add a new crop. The tennis chain is always shown from its landscape photo (the portrait one is mostly T-shirt) except in the piece gallery, where photos are shown whole.
 
 ### Logo
 

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
 import { Sparkle } from '@/components/visual/ornaments';
 import { getConsultationType, type MeetingFormatId } from '@/config/consultations';
-import { site } from '@/content/site';
+import { inPersonLocation } from '@/content/site';
 import { bookingCalendarEvent, googleCalendarUrl } from '@/lib/calendar';
 import { ease } from '@/lib/motion';
 import { fmtDateLong, fmtTime, fmtTzName, STUDIO_TZ } from './time';
@@ -104,7 +104,7 @@ export function BookingSuccess({
             {fmtDateLong(result.startsAt)} at {fmtTime(result.startsAt)} {fmtTzName(result.startsAt, STUDIO_TZ)}
           </dd>
           <dd className="mt-1 text-sm text-smoke">
-            {result.format === 'IN_STUDIO' ? site.address.oneLine : 'Video call — link to follow by email'}
+            {result.format === 'IN_STUDIO' ? inPersonLocation : 'Video call — link to follow by email'}
           </dd>
         </div>
       </dl>

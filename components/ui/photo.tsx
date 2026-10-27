@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import { Sparkle } from '@/components/visual/ornaments';
 import type { ImageAsset } from '@/content/images';
 import { cn } from '@/lib/cn';
+import { coverFactor, parseRatio, scaleSizes } from '@/lib/photo-sizes';
 
 interface PhotoProps {
   image: ImageAsset;
@@ -10,8 +11,6 @@ interface PhotoProps {
   ratio?: string;
   sizes: string;
   priority?: boolean;
-  /** Crop in tighter around the focal point (1 = none). Used for detail crops. */
-  zoom?: number;
   /** Override the stored focal point for this crop. */
   focus?: { x: number; y: number };
   /** Show the one-off sparkle glint on hover (cards only). */
@@ -27,21 +26,17 @@ interface PhotoProps {
  * The client's photography on a dark card with the site-wide grade:
  * object-fit cover around a stored focal point, a slight contrast lift and
  * a vignette that melts into the black page.
+ *
+ * Crops only ever come from object-fit within the frame; photos are never
+ * scaled up to fake a tighter crop (that blurs phone photos). Pick a frame
+ * ratio and width that stay within the photo's native resolution
+ * (see maxSharpFrameWidth in lib/photo-sizes.ts).
  */
-export function Photo({
-  image,
-  ratio,
-  sizes,
-  priority,
-  zoom = 1,
-  focus,
-  glints,
-  hoverZoom,
-  className,
-  imageClassName,
-  style,
-}: PhotoProps) {
+export function Photo({ image, ratio, sizes, priority, focus, glints, hoverZoom, className, imageClassName, style }: PhotoProps) {
   const f = focus ?? image.focus;
+  const frameRatio = ratio ? parseRatio(ratio) : image.width / image.height;
+  // Request enough pixels for the visible cover crop (plus the hover scale), never just the frame width.
+  const responsiveSizes = scaleSizes(sizes, coverFactor(image.width, image.height, frameRatio, hoverZoom ? 1.04 : 1));
   return (
     <div
       className={cn('photo-grade', className)}
@@ -57,13 +52,13 @@ export function Photo({
           'absolute inset-0',
           hoverZoom && 'transition-transform duration-[1200ms] ease-lux group-hover:scale-[1.04]',
         )}
-        style={{ transform: zoom !== 1 ? `scale(${zoom})` : undefined, transformOrigin: `${f.x}% ${f.y}%` }}
+        style={{ transformOrigin: `${f.x}% ${f.y}%` }}
       >
         <Image
           src={image.src}
           alt={image.alt}
           fill
-          sizes={sizes}
+          sizes={responsiveSizes}
           priority={priority}
           quality={82}
           className={cn('object-cover', imageClassName)}

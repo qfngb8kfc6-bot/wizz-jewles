@@ -22,13 +22,16 @@ export const home = {
       'No middlemen, no catalogue. The person you talk to is the person who designs your piece and sets every stone in it.',
       'Grillz are moulded to your teeth. Chains are built link by link. Rings are paved until the whole surface is light. If it is not right, it does not leave the bench.',
     ],
-    // TODO: client — confirm these numbers before launch.
-    stats: [
-      { value: 10, suffix: '+', label: 'Years at the bench' },
-      { value: 500, suffix: '+', label: 'Custom pieces made' },
-      { value: 100, suffix: '%', label: 'Made by hand' },
-    ],
-    images: { main: work.ringPortrait, accent: work.chainLandscape, detail: work.grillzPortrait },
+    /** TODO: client — replace with real numbers, then set `published: true`. Hidden until then. */
+    stats: {
+      published: false,
+      items: [
+        { value: 10, suffix: '+', label: 'Years at the bench' },
+        { value: 500, suffix: '+', label: 'Custom pieces made' },
+        { value: 100, suffix: '%', label: 'Made by hand' },
+      ],
+    },
+    images: { main: work.ringPortrait, accent: work.chainLandscape },
   },
   process: {
     eyebrow: 'How custom works',
@@ -51,7 +54,7 @@ export const home = {
   finalCta: {
     eyebrow: 'Private consultations',
     title: 'Got an idea?\nLet’s make it shine.',
-    body: 'Book a slot in the studio or a video call. No pressure, no obligation. Just straight talk and good stones.',
+    body: 'Book a slot in person or on a video call. No pressure, no obligation. Just straight talk and good stones.',
     cta: { label: 'Book a Consultation', href: '/book' },
   },
 };

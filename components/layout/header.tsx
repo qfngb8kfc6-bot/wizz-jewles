@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
 import { Logo } from '@/components/ui/logo';
 import { logos } from '@/content/brand';
-import { navigation, site } from '@/content/site';
+import { contact, locationLine, navigation, site } from '@/content/site';
 import { cn } from '@/lib/cn';
 import { ease } from '@/lib/motion';
 
@@ -245,22 +245,24 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </li>
               ))}
             </motion.ul>
-            <motion.div
-              className="mt-auto space-y-3 border-t border-gold/25 pt-8 text-sm text-ice/70"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.8, duration: 0.6 } }}
-              exit={{ opacity: 0, transition: { duration: 0.2 } }}
-            >
-              <p>{site.address.oneLine}</p>
-              <p className="flex flex-wrap gap-x-6 gap-y-2">
-                <a href={site.phoneHref} className="link-lux">
-                  {site.phone}
-                </a>
-                <a href={`mailto:${site.email}`} className="link-lux">
-                  {site.email}
-                </a>
-              </p>
-            </motion.div>
+            {contact ? (
+              <motion.div
+                className="mt-auto space-y-3 border-t border-gold/25 pt-8 text-sm text-ice/70"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.8, duration: 0.6 } }}
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
+              >
+                <p>{locationLine}</p>
+                <p className="flex flex-wrap gap-x-6 gap-y-2">
+                  <a href={contact.phoneHref} className="link-lux">
+                    {contact.phone}
+                  </a>
+                  <a href={`mailto:${contact.email}`} className="link-lux">
+                    {contact.email}
+                  </a>
+                </p>
+              </motion.div>
+            ) : null}
           </nav>
         </motion.div>
       ) : null}
