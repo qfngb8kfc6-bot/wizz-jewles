@@ -37,8 +37,8 @@ export interface ContactDetails {
     postcode?: string;
     geo?: { lat: number; lng: number };
   };
-  /** Shown instead of opening hours. Bookable times come from config/availability.ts. */
-  hours: string;
+  /** WhatsApp chat link (wa.me) and the number as displayed. */
+  whatsapp: { href: string; display: string };
 }
 
 const contactDetails: ContactDetails = {
@@ -54,7 +54,7 @@ const contactDetails: ContactDetails = {
     region: 'London',
     country: 'GB',
   },
-  hours: 'By appointment',
+  whatsapp: { href: 'https://wa.me/447404311797', display: '+44 7404 311797' },
 };
 
 /** The studio's contact details, or null while they are unpublished. */
@@ -70,19 +70,21 @@ export const locationLine = contact ? `${contact.address.area}, ${contact.addres
 export const inPersonLocation = 'Kensington & Bayswater, London — exact location confirmed by Wizz before your appointment';
 
 export interface SocialLink {
-  name: 'Instagram' | 'Pinterest' | 'TikTok';
+  name: 'Instagram' | 'TikTok';
+  /** Shown next to the network name, e.g. "@wizzjewels". */
+  handle: string;
   href: string;
 }
 
 /**
- * TODO: client — add the real handles, then set `published: true`.
- * Social links stay hidden everywhere (footer, contact page, JSON-LD) until then.
+ * Social profiles: footer, contact page, mobile menu and JSON-LD `sameAs`.
+ * Set `published: false` to hide them everywhere.
  */
 const socialLinks: { published: boolean; items: SocialLink[] } = {
-  published: false,
+  published: true,
   items: [
-    { name: 'Instagram', href: 'https://www.instagram.com/' },
-    { name: 'TikTok', href: 'https://www.tiktok.com/' },
+    { name: 'Instagram', handle: '@wizzjewels', href: 'https://www.instagram.com/wizzjewels/' },
+    { name: 'TikTok', handle: '@wizz_jewels1', href: 'https://www.tiktok.com/@wizz_jewels1' },
   ],
 };
 

@@ -45,6 +45,23 @@ function useConsent(): Consent | undefined {
   return useSyncExternalStore<Consent | undefined>(subscribe, read, () => undefined);
 }
 
+/**
+ * While the banner is showing, publish its height as --cookie-banner-offset so
+ * other bottom-anchored UI (the floating WhatsApp button) can sit above it.
+ */
+function publishBannerOffset(el: HTMLDivElement | null) {
+  if (!el) return;
+  const root = document.documentElement;
+  const update = () => root.style.setProperty('--cookie-banner-offset', `${Math.ceil(el.offsetHeight) + 12}px`);
+  update();
+  const ro = new ResizeObserver(update);
+  ro.observe(el);
+  return () => {
+    ro.disconnect();
+    root.style.removeProperty('--cookie-banner-offset');
+  };
+}
+
 export function CookieBanner() {
   const consent = useConsent();
   const choose = useCallback((v: Consent) => write(v), []);
@@ -52,9 +69,10 @@ export function CookieBanner() {
     <AnimatePresence>
       {consent === null ? (
         <motion.div
+          ref={publishBannerOffset}
           role="region"
           aria-label="Cookie notice"
-          className="fixed inset-x-4 bottom-4 z-[120] sm:inset-x-auto sm:bottom-6 sm:left-6 sm:max-w-md"
+          className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-[120] sm:inset-x-auto sm:bottom-6 sm:left-6 sm:max-w-md"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0, transition: { delay: 1.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
           exit={{ opacity: 0, y: 20, transition: { duration: 0.35 } }}

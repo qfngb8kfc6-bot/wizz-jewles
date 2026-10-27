@@ -24,12 +24,14 @@ export interface AvailabilityConfig {
 
 export const availability: AvailabilityConfig = {
   timeZone: 'Europe/London',
+  // Monday–Friday 10:00–18:00; Saturday and Sunday closed.
+  // Every appointment ends by closing time (start + duration <= close).
   hours: {
-    2: { open: '10:00', close: '18:00' }, // Tuesday
+    1: { open: '10:00', close: '18:00' }, // Monday
+    2: { open: '10:00', close: '18:00' },
     3: { open: '10:00', close: '18:00' },
-    4: { open: '10:00', close: '19:00' }, // late Thursday
-    5: { open: '10:00', close: '18:00' },
-    6: { open: '10:00', close: '16:00' }, // Saturday
+    4: { open: '10:00', close: '18:00' },
+    5: { open: '10:00', close: '18:00' }, // Friday
   },
   slotStepMinutes: 30,
   bufferMinutes: 15,

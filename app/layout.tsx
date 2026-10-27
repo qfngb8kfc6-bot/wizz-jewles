@@ -50,6 +50,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: '#000000',
   colorScheme: 'dark',
+  // Lets fixed UI use env(safe-area-inset-*) on notched phones.
+  viewportFit: 'cover',
 };
 
 /**

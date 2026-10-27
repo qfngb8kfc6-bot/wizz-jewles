@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import type { RefObject } from 'react';
 import { Button } from '@/components/ui/button';
+import { WhatsAppLink } from '@/components/ui/whatsapp-link';
 import { ArrowRight } from '@/components/ui/icons';
 import { Sparkle } from '@/components/visual/ornaments';
 import { getConsultationType, type MeetingFormatId } from '@/config/consultations';
@@ -122,6 +123,9 @@ export function BookingSuccess({
         <a href={manageHref} className="text-gold-bright underline underline-offset-4">
           Reschedule or cancel
         </a>
+      </p>
+      <p className="mt-3 text-sm text-smoke">
+        Questions before your appointment? <WhatsAppLink className="text-gold-bright" />
       </p>
     </div>
   );

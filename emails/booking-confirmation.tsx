@@ -11,6 +11,8 @@ export interface BookingEmailProps {
   location: string;
   manageUrl: string;
   googleUrl: string;
+  /** wa.me link; omitted while contact details are unpublished. */
+  whatsappUrl?: string;
 }
 
 export default function BookingConfirmationEmail(p: BookingEmailProps) {
@@ -41,7 +43,17 @@ export default function BookingConfirmationEmail(p: BookingEmailProps) {
         · Apple and Outlook: open the attached invitation.
       </Text>
       <Text style={{ ...styles.p, fontSize: '13px', color: palette.smoke }}>
-        Got photos, screenshots or sketches of your idea? Just reply to this email.
+        Got photos, screenshots or sketches of your idea? Just reply to this email
+        {p.whatsappUrl ? (
+          <>
+            {' '}
+            or{' '}
+            <Link href={p.whatsappUrl} style={styles.link}>
+              message on WhatsApp
+            </Link>
+          </>
+        ) : null}
+        .
       </Text>
     </EmailLayout>
   );

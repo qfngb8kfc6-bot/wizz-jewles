@@ -1,14 +1,18 @@
 import { expect, fillBookingToReview, test } from './fixtures';
 
 /**
- * The client's real contact details are published; invented placeholders
- * (old address, phone, emails, testimonials, stats) and the hidden social
- * links must never render.
+ * The client's real contact details, hours, WhatsApp and socials are
+ * published; invented placeholders (old address, phone, emails,
+ * testimonials, stats) and Pinterest must never render.
  */
 const EMAIL = 'wizzjewelstm@gmail.com';
 const PHONE = '07404 311797';
 const LOCATION_LINE = 'Kensington & Bayswater, London · By appointment only';
 const IN_PERSON = 'Kensington & Bayswater, London — exact location confirmed by Wizz before your appointment';
+const WHATSAPP = 'https://wa.me/447404311797';
+const INSTAGRAM = 'https://www.instagram.com/wizzjewels/';
+const TIKTOK = 'https://www.tiktok.com/@wizz_jewels1';
+const HOURS = ['Mon – Fri · 10:00 – 18:00', 'Sat – Sun · Closed', 'By appointment only'];
 
 const forbidden = [
   /Hatton Garden/i,
@@ -22,7 +26,10 @@ const forbidden = [
   /Years at the bench/i,
   /Street address/i,
   /openstreetmap/i,
-  /instagram\.com|tiktok\.com|pinterest\.com/i,
+  /pinterest/i,
+  // Only the real profiles may appear.
+  /instagram\.com\/(?!wizzjewels\/)/i,
+  /tiktok\.com\/(?!@wizz_jewels1)/i,
 ];
 
 const pages = [
@@ -52,7 +59,7 @@ test('home hides the testimonials and stats while unpublished', async ({ page })
   await expect(page.getByText('Custom pieces made')).toHaveCount(0);
 });
 
-test('structured data has the real contact details and no street address or geo', async ({ page }) => {
+test('structured data has the real contact details and socials, and no street address or geo', async ({ page }) => {
   await page.goto('/');
   const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
   const store = blocks.map((b) => JSON.parse(b)).find((d) => d['@type'] === 'JewelryStore');
@@ -63,27 +70,47 @@ test('structured data has the real contact details and no street address or geo'
     addressRegion: 'London',
     addressCountry: 'GB',
   });
-  for (const key of ['geo', 'sameAs']) expect(store).not.toHaveProperty(key);
+  expect(store.sameAs).toEqual([INSTAGRAM, TIKTOK]);
+  expect(store).not.toHaveProperty('geo');
 });
 
-test('contact page shows location, phone, email and appointment-only hours, with no map or socials', async ({ page }) => {
+test('contact page shows location, hours, phone, email, WhatsApp and socials, with no map', async ({ page }) => {
   await page.goto('/contact');
   const details = page.locator('section[aria-label="Contact form and details"]');
   await expect(details.getByText(LOCATION_LINE)).toBeVisible();
   await expect(details.getByRole('link', { name: PHONE })).toHaveAttribute('href', 'tel:+447404311797');
   await expect(details.getByRole('link', { name: EMAIL })).toHaveAttribute('href', `mailto:${EMAIL}`);
-  await expect(details.getByText('By appointment', { exact: true })).toBeVisible();
+
+  const hours = details.locator('dl');
+  await expect(hours.locator('div').nth(0)).toHaveText(/Mon – Fri\s*10:00 – 18:00/);
+  await expect(hours.locator('div').nth(1)).toHaveText(/Sat – Sun\s*Closed/);
+  await expect(hours.locator('div')).toHaveCount(2);
+  await expect(details.getByText('By appointment only', { exact: true })).toBeVisible();
+
+  const whatsapp = details.getByRole('link', { name: /Message on WhatsApp/ });
+  await expect(whatsapp).toHaveAttribute('href', WHATSAPP);
+  await expect(whatsapp).toHaveAttribute('target', '_blank');
+  await expect(whatsapp).toHaveAttribute('rel', /noopener/);
+
+  await expect(details.getByRole('link', { name: /Instagram @wizzjewels/ })).toHaveAttribute('href', INSTAGRAM);
+  await expect(details.getByRole('link', { name: /TikTok @wizz_jewels1/ })).toHaveAttribute('href', TIKTOK);
   await expect(page.locator('iframe')).toHaveCount(0);
-  await expect(page.getByRole('heading', { name: 'Follow' })).toHaveCount(0);
 });
 
-test('footer shows the real contact details and no social links', async ({ page }) => {
+test('footer shows hours, contact details, WhatsApp and socials', async ({ page }) => {
   await page.goto('/');
   const footer = page.locator('footer');
+  for (const line of HOURS) await expect(footer.getByText(line, { exact: true })).toBeVisible();
   await expect(footer.getByRole('link', { name: PHONE })).toBeVisible();
   await expect(footer.getByRole('link', { name: EMAIL })).toBeVisible();
-  await expect(footer.getByText('By appointment only')).toBeVisible();
-  await expect(footer.getByRole('heading', { name: 'Follow' })).toHaveCount(0);
+  await expect(footer.getByRole('link', { name: /Message on WhatsApp/ })).toHaveAttribute('href', WHATSAPP);
+  await expect(footer.getByRole('link', { name: /on Instagram, @wizzjewels/ })).toHaveAttribute('href', INSTAGRAM);
+  await expect(footer.getByRole('link', { name: /on TikTok, @wizz_jewels1/ })).toHaveAttribute('href', TIKTOK);
+});
+
+test('the floating WhatsApp button is mobile only', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('a.wa-fab')).toBeHidden();
 });
 
 for (const path of ['/privacy', '/terms', '/cookies']) {
@@ -103,6 +130,7 @@ test('in-person booking shows the agreed location on review, confirmation and ca
 
   const success = page.getByTestId('booking-success');
   await expect(success.getByText(IN_PERSON)).toBeVisible();
+  await expect(success.getByRole('link', { name: /Message on WhatsApp/ })).toHaveAttribute('href', WHATSAPP);
 
   const google = new URL((await success.getByRole('link', { name: 'Add to Google Calendar' }).getAttribute('href'))!);
   expect(google.searchParams.get('location')).toBe(IN_PERSON);

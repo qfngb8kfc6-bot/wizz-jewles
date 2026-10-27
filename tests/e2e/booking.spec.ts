@@ -69,4 +69,23 @@ test.describe('booking', () => {
     await expect(page.getByText('Please accept the privacy policy to continue')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'A little about you' })).toBeVisible();
   });
+
+  test('weekends are never bookable', async ({ page }) => {
+    await page.goto('/book');
+    await page.getByText('General Enquiry', { exact: true }).click();
+    await page.getByText('Video call', { exact: true }).click();
+    await page.getByRole('button', { name: 'Continue' }).click();
+    await expect(page.getByRole('heading', { name: 'Pick your moment' })).toBeVisible();
+    for (let month = 0; month < 3; month++) {
+      await page.getByText('Checking availability…').waitFor({ state: 'hidden' });
+      const weekend = page.getByRole('button', { name: /^(Saturday|Sunday) / });
+      const labels = await weekend.evaluateAll((els) => els.map((e) => e.getAttribute('aria-label') ?? ''));
+      expect(labels.length).toBeGreaterThan(0);
+      for (const label of labels) expect(label, label).toMatch(/, unavailable$/);
+      const loaded = page.waitForResponse((r) => r.url().includes('/api/availability') && r.url().includes('month='));
+      await page.getByRole('button', { name: 'Next month' }).click();
+      await loaded;
+      await page.waitForTimeout(400);
+    }
+  });
 });
