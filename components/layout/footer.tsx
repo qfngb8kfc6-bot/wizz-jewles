@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/motion/reveal';
-import { Instagram, Pinterest, TikTok } from '@/components/ui/icons';
+import { Instagram, TikTok } from '@/components/ui/icons';
 import { Logo } from '@/components/ui/logo';
+import { WhatsAppLink } from '@/components/ui/whatsapp-link';
+import { openingHoursLines } from '@/lib/opening-hours';
 import { contact, legalLinks, navigation, site, social } from '@/content/site';
 import { CookieSettingsLink } from './cookie-banner';
 import { CurrentYear } from './current-year';
 import { NewsletterForm } from './newsletter-form';
 
-const socialIcon = { Instagram, Pinterest, TikTok } as const;
+const socialIcon = { Instagram, TikTok } as const;
 
 export function Footer() {
   return (
@@ -44,13 +46,22 @@ export function Footer() {
                 <address className="mt-6 space-y-3 text-sm text-ice/85 not-italic">
                   <p>
                     {contact.address.area}, {contact.address.city}
-                    <br />
-                    <span className="text-ice/60">By appointment only</span>
+                  </p>
+                  <p className="text-ice/60">
+                    {openingHoursLines().map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                    <span className="block">By appointment only</span>
                   </p>
                   <p>
                     <a href={contact.phoneHref} className="link-lux">
                       {contact.phone}
                     </a>
+                  </p>
+                  <p>
+                    <WhatsAppLink />
                   </p>
                   <p>
                     <a href={`mailto:${contact.email}`} className="link-lux">
@@ -85,7 +96,7 @@ export function Footer() {
                           href={s.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`${site.name} on ${s.name} (opens in a new tab)`}
+                          aria-label={`${site.name} on ${s.name}, ${s.handle} (opens in a new tab)`}
                           className="flex size-11 items-center justify-center rounded-full border border-ice/20 text-ice/80 transition-all duration-500 ease-lux hover:-translate-y-0.5 hover:border-gold hover:text-gold"
                         >
                           <Icon className="size-[18px]" />

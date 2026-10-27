@@ -7,8 +7,9 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
 import { Logo } from '@/components/ui/logo';
+import { WhatsAppLink } from '@/components/ui/whatsapp-link';
 import { logos } from '@/content/brand';
-import { contact, locationLine, navigation, site } from '@/content/site';
+import { contact, locationLine, navigation, site, social } from '@/content/site';
 import { cn } from '@/lib/cn';
 import { ease } from '@/lib/motion';
 
@@ -175,6 +176,8 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
     if (!open) return;
     const { overflow } = document.body.style;
     document.body.style.overflow = 'hidden';
+    // Lets fixed UI elsewhere (the floating WhatsApp button) step aside.
+    document.documentElement.dataset.menuOpen = '';
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'Tab' && panelRef.current) {
@@ -198,6 +201,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
     panelRef.current?.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
     return () => {
       document.body.style.overflow = overflow;
+      delete document.documentElement.dataset.menuOpen;
       window.removeEventListener('keydown', onKey);
     };
   }, [open, onClose]);
@@ -245,22 +249,37 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </li>
               ))}
             </motion.ul>
-            {contact ? (
+            {contact || social.length ? (
               <motion.div
                 className="mt-auto space-y-3 border-t border-gold/25 pt-8 text-sm text-ice/70"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { delay: 0.8, duration: 0.6 } }}
                 exit={{ opacity: 0, transition: { duration: 0.2 } }}
               >
-                <p>{locationLine}</p>
-                <p className="flex flex-wrap gap-x-6 gap-y-2">
-                  <a href={contact.phoneHref} className="link-lux">
-                    {contact.phone}
-                  </a>
-                  <a href={`mailto:${contact.email}`} className="link-lux">
-                    {contact.email}
-                  </a>
-                </p>
+                {contact ? (
+                  <>
+                    <p>{locationLine}</p>
+                    <p className="flex flex-wrap gap-x-6 gap-y-2">
+                      <a href={contact.phoneHref} className="link-lux">
+                        {contact.phone}
+                      </a>
+                      <a href={`mailto:${contact.email}`} className="link-lux">
+                        {contact.email}
+                      </a>
+                      <WhatsAppLink label="WhatsApp" />
+                    </p>
+                  </>
+                ) : null}
+                {social.length ? (
+                  <p className="flex flex-wrap gap-x-6 gap-y-2">
+                    {social.map((s) => (
+                      <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer" className="link-lux">
+                        {s.name} <span className="text-ice/50">{s.handle}</span>
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                    ))}
+                  </p>
+                ) : null}
               </motion.div>
             ) : null}
           </nav>

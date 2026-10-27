@@ -198,7 +198,9 @@
     width: 100%;
     margin-inline: auto;
     max-width: 96rem;
-    padding-inline: clamp(1.25rem, 4vw, 4rem);
+    /* Never closer to the edge than the notch (viewport-fit=cover). */
+    padding-left: max(clamp(1.25rem, 4vw, 4rem), env(safe-area-inset-left));
+    padding-right: max(clamp(1.25rem, 4vw, 4rem), env(safe-area-inset-right));
   }
 
   .hairline {
@@ -564,4 +566,11 @@ html.intro .hero-rise {
   .hero-rise {
     animation: none;
   }
+}
+
+/* Floating WhatsApp button steps aside while the mobile menu is open. */
+html[data-menu-open] .wa-fab {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.85);
 }

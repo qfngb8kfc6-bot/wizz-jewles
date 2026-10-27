@@ -78,10 +78,10 @@ export const Instagram = (p: P) => (
     <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" />
   </svg>
 );
-export const Pinterest = (p: P) => (
+export const WhatsApp = (p: P) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" {...base} {...p}>
-    <circle cx="12" cy="12" r="8.5" />
-    <path d="M10.6 20.2 12.4 12.6M11 15.2c.6.9 1.6 1.3 2.7 1.1 2-.4 3.1-2.6 2.7-4.9-.4-2.3-2.6-3.6-5-3.1-2.6.5-3.9 2.8-3.3 5 .2.6.5 1 .9 1.3" />
+    <path d="M3.6 20.4 4.9 16A8.6 8.6 0 1 1 8 19.1l-4.4 1.3Z" />
+    <path d="M9.1 7.9c-.4 0-.9.4-.9 1.2 0 2.9 3.6 6.6 6.6 6.6.8 0 1.2-.5 1.2-.9v-.8l-2-.9-.9.9c-1.2-.4-2.6-1.8-3-3l.9-.9-.9-2h-1Z" />
   </svg>
 );
 export const TikTok = (p: P) => (

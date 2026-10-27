@@ -2,6 +2,7 @@ import { CookieBanner } from '@/components/layout/cookie-banner';
 import { ClientExtras } from '@/components/layout/client-extras';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
+import { WhatsAppFab } from '@/components/layout/whatsapp-fab';
 import { ScrollProgress } from '@/components/motion/scroll-progress';
 import { Intro } from '@/components/visual/intro';
 import { Suspense } from 'react';
@@ -31,6 +32,7 @@ export default function SiteLayout({ children }: LayoutProps<'/'>) {
         {children}
       </main>
       <Footer />
+      <WhatsAppFab />
       <CookieBanner />
     </>
   );

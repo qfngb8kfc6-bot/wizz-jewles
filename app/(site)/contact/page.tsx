@@ -3,7 +3,9 @@ import { ContactForm } from '@/components/sections/contact-form';
 import { PageHero } from '@/components/sections/page-hero';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from '@/components/ui/icons';
+import { WhatsAppLink } from '@/components/ui/whatsapp-link';
 import { contact, locationLine, site, social } from '@/content/site';
+import { openingHoursRows } from '@/lib/opening-hours';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({
@@ -43,11 +45,20 @@ export default function ContactPage() {
                       {contact.email}
                     </a>
                   </p>
+                  <WhatsAppLink className="mt-4 text-lg text-gold-bright hover:text-ice" />
                 </div>
                 <div>
                   <h2 className="label text-gold-bright">Hours</h2>
-                  <p className="mt-4 text-lg text-ice/85">{contact.hours}</p>
-                  <p className="mt-2 text-sm text-smoke">Available times are shown when you book.</p>
+                  <dl className="mt-4 divide-y divide-line">
+                    {openingHoursRows().map((row) => (
+                      <div key={row.days} className="flex justify-between gap-6 py-2.5">
+                        <dt className="text-ice/85">{row.days}</dt>
+                        <dd className={row.hours === 'Closed' ? 'text-smoke' : 'text-ice/85 tabular-nums'}>{row.hours}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p className="mt-3 text-ice/85">By appointment only</p>
+                  <p className="mt-1 text-sm text-smoke">Available times are shown when you book.</p>
                 </div>
               </>
             ) : (
@@ -70,7 +81,8 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="link-lux text-ice/85 hover:text-gold-bright"
                       >
-                        {s.name}
+                        {s.name} <span className="text-smoke">{s.handle}</span>
+                        <span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     </li>
                   ))}
